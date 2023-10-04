@@ -2,6 +2,7 @@ import React from "react";
 
 // components
 import Nav from "../components/Nav";
+import Form from "../components/Form";
 
 // types
 import { Pages } from "../types";
@@ -20,6 +21,12 @@ const Contact = (): JSX.Element => {
           of scheduling a meeting with me and have a custom built calendar
         </li>
       </ul>
+
+      <Form />
+
+      <section>
+        <h3>Socials</h3>
+      </section>
     </div>
   );
 };
