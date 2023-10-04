@@ -83,7 +83,7 @@ const Meeting = (): JSX.Element => {
       <Content>
         <Calendar>
           {data.map((datum, index) => (
-            <CalendarDay date={datum.date} day={datum.day} booked={[]} />
+            <CalendarDay key={index} date={datum.date} day={datum.day} booked={[]} />
           ))}
         </Calendar>
         <form onSubmit={handleMeetingSchedule}>

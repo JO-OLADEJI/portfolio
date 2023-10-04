@@ -22,8 +22,8 @@ const Outline = styled.nav`
   }
 `;
 
-const Route = styled.li<{ current: boolean }>`
-  ${({ current }) => current ? `
+const Route = styled.li<{ iscurrentroute: boolean }>`
+  ${({ iscurrentroute }) => iscurrentroute ? `
     text-decoration: line-through;
     a {
       cursor: s-resize;
@@ -39,16 +39,16 @@ const Nav = ({ page }: NavProps): JSX.Element => {
   return (
     <Outline>
       <ul>
-        <Route current={page === Pages.Home}>
+        <Route iscurrentroute={page === Pages.Home ? true : false}>
           <Link to={"/"}>Home</Link>
         </Route>
-        <Route current={page === Pages.About}>
+        <Route iscurrentroute={page === Pages.About ? true : false}>
           <Link to={"/about"}>About</Link>
         </Route>
-        <Route current={page === Pages.Portfolio}>
+        <Route iscurrentroute={page === Pages.Portfolio ? true : false}>
           <Link to={"/portfolio"}>Portfolio</Link>
         </Route>
-        <Route current={page === Pages.Contact}>
+        <Route iscurrentroute={page === Pages.Contact ? true : false}>
           <Link to={"/contact"}>Contact</Link>
         </Route>
       </ul>
