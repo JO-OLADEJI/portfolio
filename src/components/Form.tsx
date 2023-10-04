@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const Outline = styled.div`
-  margin: 2rem 0;
+  margin: 3rem 0;
   text-align: center;
 
   form {
-    margin: 1rem auto;
+    margin: 1.5rem auto;
     width: fit-content;
   }
 
@@ -62,7 +62,10 @@ const Form = (): JSX.Element => {
 
   return (
     <Outline>
-      <h1>Contact</h1>
+      <div>
+        <h1>Reach Out</h1>
+        <p>primitive :(</p>
+      </div>
       <form onSubmit={handleMailSend}>
         <div>
           <label htmlFor="name">Name</label>

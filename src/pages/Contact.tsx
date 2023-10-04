@@ -3,6 +3,7 @@ import React from "react";
 // components
 import Nav from "../components/Nav";
 import Form from "../components/Form";
+import Terminal from "../components/Terminal";
 
 // types
 import { Pages } from "../types";
@@ -23,6 +24,7 @@ const Contact = (): JSX.Element => {
       </ul>
 
       <Form />
+      <Terminal />
 
       <section>
         <h3>Socials</h3>
