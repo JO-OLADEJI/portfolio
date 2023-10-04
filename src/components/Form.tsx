@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const Outline = styled.div`
-  margin: 3rem 0;
   text-align: center;
+  margin-top: 5rem;
 
   form {
     margin: 1.5rem auto;

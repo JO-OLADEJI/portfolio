@@ -4,6 +4,7 @@ import React from "react";
 import Nav from "../components/Nav";
 import Form from "../components/Form";
 import Terminal from "../components/Terminal";
+import Canvas from "../components/Canvas";
 
 // types
 import { Pages } from "../types";
@@ -25,6 +26,7 @@ const Contact = (): JSX.Element => {
 
       <Form />
       <Terminal />
+      <Canvas />
 
       <section>
         <h3>Socials</h3>

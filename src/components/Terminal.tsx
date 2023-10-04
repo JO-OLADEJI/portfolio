@@ -3,11 +3,12 @@ import styled from "styled-components";
 
 const Outline = styled.div`
   text-align: center;
+  margin-top: 5rem;
 `;
 
 const Interface = styled.div`
   margin: 1.5rem auto;
-  width: 70rem;
+  width: 50rem;
   height: 30rem;
   border-radius: .5rem;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
