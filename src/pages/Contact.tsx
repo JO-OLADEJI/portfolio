@@ -1,13 +1,21 @@
 import React from "react";
+import styled from "styled-components";
 
 // components
 import Nav from "../components/Nav";
 import Form from "../components/Form";
 import Terminal from "../components/Terminal";
 import Canvas from "../components/Canvas";
+import Meeting from "../components/Meeting";
 
 // types
 import { Pages } from "../types";
+
+const SocialProfiles = styled.div`
+  margin-top: 5rem;
+  text-align: center;
+  height: 30rem;
+`;
 
 const Contact = (): JSX.Element => {
   return (
@@ -27,10 +35,11 @@ const Contact = (): JSX.Element => {
       <Form />
       <Terminal />
       <Canvas />
+      <Meeting />
 
-      <section>
-        <h3>Socials</h3>
-      </section>
+      <SocialProfiles>
+        <h1>Socials</h1>
+      </SocialProfiles>
     </div>
   );
 };

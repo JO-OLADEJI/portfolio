@@ -34,6 +34,7 @@ const Outline = styled.div`
     top: 0;
     left: 1.5rem;
     transform: translate(0, -50%);
+    cursor: pointer;
   }
 
   span {
