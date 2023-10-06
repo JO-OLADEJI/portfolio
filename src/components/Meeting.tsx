@@ -4,9 +4,13 @@ import styled from "styled-components";
 // components
 import CalendarDay from "./CalendarDay";
 
-const Outline = styled.div`
+// types
+import { ContactMediumProps } from "../types";
+
+const Outline = styled.div<{ isSelected: boolean }>`
+  display: ${({ isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
-  margin-top: 5rem;
+  margin-top: 2rem;
 
   form {
     width: fit-content;
@@ -56,7 +60,7 @@ const Calendar = styled.div`
   align-items: center;
 `;
 
-const Meeting = (): JSX.Element => {
+const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
   const [data] = useState([
     { day: "Thu", date: 5 },
     { day: "Fri", date: 6 },
@@ -74,7 +78,7 @@ const Meeting = (): JSX.Element => {
   };
 
   return (
-    <Outline>
+    <Outline isSelected={isActive}>
       <div>
         <h1>Schedule a Meeting</h1>
         <p>for professionals.</p>
@@ -83,7 +87,12 @@ const Meeting = (): JSX.Element => {
       <Content>
         <Calendar>
           {data.map((datum, index) => (
-            <CalendarDay key={index} date={datum.date} day={datum.day} booked={[]} />
+            <CalendarDay
+              key={index}
+              date={datum.date}
+              day={datum.day}
+              booked={[]}
+            />
           ))}
         </Calendar>
         <form onSubmit={handleMeetingSchedule}>

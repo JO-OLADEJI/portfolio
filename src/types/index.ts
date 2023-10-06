@@ -6,6 +6,10 @@ export enum Pages {
   Error404,
 }
 
+export interface ContactMediumProps {
+  isActive: boolean;
+}
+
 export const MORNING = ["10:00", "10:30", "11:00", "11:30", "12:00"] as const;
 export const EVENING = ["16:00", "16:30", "17:00", "17:30", "18:00"] as const;
 

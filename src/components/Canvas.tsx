@@ -1,9 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 
-const Outline = styled.div`
+// types
+import { ContactMediumProps } from "../types";
+
+const Outline = styled.div<{ isSelected: boolean }>`
+  display: ${({ isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
-  margin-top: 5rem;
+  margin-top: 2rem;
 `;
 
 const BoardOutline = styled.div`
@@ -55,9 +59,9 @@ const RedInk = styled(Ink)`
   background-color: red;
 `;
 
-const Canvas = (): JSX.Element => {
+const Canvas = ({ isActive }: ContactMediumProps): JSX.Element => {
   return (
-    <Outline>
+    <Outline isSelected={isActive}>
       <div>
         <h1>Canvas</h1>
         <p>for creatives :)</p>

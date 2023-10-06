@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const Outline = styled.div`
+// types
+import { ContactMediumProps } from "../types";
+
+const Outline = styled.div<{ isSelected: boolean }>`
+  display: ${({ isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
-  margin-top: 5rem;
+  margin-top: 2rem;
 
   form {
     margin: 1.5rem auto;
@@ -42,7 +46,7 @@ const Outline = styled.div`
   }
 `;
 
-const Form = (): JSX.Element => {
+const Form = ({ isActive }: ContactMediumProps): JSX.Element => {
   const [contactMail] = useState<string>("dejijolaoluwa@gmail.com");
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -62,7 +66,7 @@ const Form = (): JSX.Element => {
   };
 
   return (
-    <Outline>
+    <Outline isSelected={isActive}>
       <div>
         <h1>Reach Out</h1>
         <p>primitive :(</p>
