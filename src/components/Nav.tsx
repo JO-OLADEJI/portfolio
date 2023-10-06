@@ -6,6 +6,8 @@ import styled from "styled-components";
 import { Pages } from "../types";
 
 const Outline = styled.nav`
+  padding: 3rem 0;
+
   ul {
     display: flex;
     justify-content: center;
@@ -23,12 +25,15 @@ const Outline = styled.nav`
 `;
 
 const Route = styled.li<{ iscurrentroute: boolean }>`
-  ${({ iscurrentroute }) => iscurrentroute ? `
+  ${({ iscurrentroute }) =>
+    iscurrentroute
+      ? `
     text-decoration: line-through;
     a {
       cursor: s-resize;
     }
-  ` : null}
+  `
+      : null}
 `;
 
 interface NavProps {
