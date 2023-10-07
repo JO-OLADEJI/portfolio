@@ -46,7 +46,7 @@ const Outline = styled.div<{ isSelected: boolean }>`
 `;
 
 const Content = styled.div`
-  margin-top: 3rem;
+  margin: 2rem 0;
   display: flex;
   justify-content: center;
   align-items: center;

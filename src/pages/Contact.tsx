@@ -7,6 +7,7 @@ import Form from "../components/Form";
 import Terminal from "../components/Terminal";
 import Canvas from "../components/Canvas";
 import Meeting from "../components/Meeting";
+import Footer from "../components/Footer";
 
 // types
 import { Pages } from "../types";
@@ -22,7 +23,7 @@ const ContactTabs = styled.div`
 `;
 
 const TabButton = styled.button<{ selected: boolean }>`
-  width: 10rem;
+  width: 12rem;
   cursor: pointer;
   padding: 0.7rem 1.4rem;
   border: 1px solid ${({ selected }) => (selected ? "#868686" : "#e8e8e8")};
@@ -50,13 +51,11 @@ const TabButton = styled.button<{ selected: boolean }>`
     border-top-right-radius: 2rem;
     border-bottom-right-radius: 2rem;
   }
-`;
 
-// const SocialProfiles = styled.div`
-//   margin-top: 5rem;
-//   text-align: center;
-//   height: 30rem;
-// `;
+  p:last-child {
+    font-size: 0.7rem;
+  }
+`;
 
 type Tab = "meeting" | "terminal" | "form" | "canvas";
 
@@ -80,25 +79,29 @@ const Contact = (): JSX.Element => {
           selected={currentTab === "meeting"}
           onClick={(e) => handleTabClick(e, "meeting")}
         >
-          Meeting
+          <p>Meeting</p>
+          <p>for professionals.</p>
         </TabButton>
         <TabButton
           selected={currentTab === "terminal"}
           onClick={(e) => handleTabClick(e, "terminal")}
         >
-          Terminal
+          <p>Terminal</p>
+          <p>for nerds ;D</p>
         </TabButton>
         <TabButton
           selected={currentTab === "form"}
           onClick={(e) => handleTabClick(e, "form")}
         >
-          Form
+          <p>Form</p>
+          <p>primitive :/</p>
         </TabButton>
         <TabButton
           selected={currentTab === "canvas"}
           onClick={(e) => handleTabClick(e, "canvas")}
         >
-          Canvas
+          <p>Canvas</p>
+          <p>for creatives :)</p>
         </TabButton>
       </ContactTabs>
 
@@ -107,9 +110,7 @@ const Contact = (): JSX.Element => {
       <Canvas isActive={currentTab === "canvas"} />
       <Meeting isActive={currentTab === "meeting"} />
 
-      {/* <SocialProfiles>
-        <h1>Socials</h1>
-      </SocialProfiles> */}
+      <Footer />
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React from "react";
 
 // components
 import Nav from "../components/Nav";
+import Footer from "../components/Footer";
 
 // types
 import { Pages } from "../types";
@@ -9,8 +10,8 @@ import { Pages } from "../types";
 const Portfolio = (): JSX.Element => {
   return (
     <div>
-      <h1>Portfolio</h1>
       <Nav page={Pages.Portfolio} />
+
       <ul>
         <li>Skillset</li>
         <li>
@@ -21,6 +22,8 @@ const Portfolio = (): JSX.Element => {
 
         <li>Attach Downloadable CV (pdf and video)</li>
       </ul>
+
+      <Footer />
     </div>
   );
 };

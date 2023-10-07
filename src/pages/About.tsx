@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 // components
 import Nav from "../components/Nav";
+import Footer from "../components/Footer";
 
 // assets / data
 import headshotImg from "../assets/headshot.jpg";
@@ -56,6 +57,7 @@ const TraitsBody = styled.div`
 
   h1 {
     font-size: 8rem;
+    color: #7b7b7b;
   }
 
   h3 {
@@ -114,7 +116,7 @@ const TemperamentBar = styled.div<{ percent: number }>`
 `;
 
 const IntrovertBar = styled(TemperamentBar)`
-  background-color: #444444;
+  background-color: #7b7b7b;
   justify-content: flex-start;
 
   h3 {
@@ -124,7 +126,7 @@ const IntrovertBar = styled(TemperamentBar)`
   p {
     left: 1rem;
     bottom: -2.5rem;
-    color: #444444;
+    color: #7b7b7b;
   }
 `;
 
@@ -228,6 +230,8 @@ const About = (): JSX.Element => {
             allowFullScreen={true}
           ></iframe>
         </OthersOutline>
+
+        <Footer />
       </Outline>
     </div>
   );

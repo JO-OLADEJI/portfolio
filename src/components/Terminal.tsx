@@ -11,7 +11,7 @@ const Outline = styled.div<{ isSelected: boolean }>`
 `;
 
 const Interface = styled.div`
-  margin: 1.5rem auto;
+  margin: 2rem auto;
   width: 50rem;
   height: 30rem;
   border-radius: 0.5rem;
@@ -25,8 +25,8 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
   return (
     <Outline isSelected={isActive}>
       <div>
-        <h1>Terminal</h1>
-        <p>for nerds :D</p>
+        <h1>Terminal &gt;_</h1>
+        <p>for nerds ;D</p>
       </div>
 
       <Interface>

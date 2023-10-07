@@ -10,7 +10,7 @@ const Outline = styled.div<{ isSelected: boolean }>`
   margin-top: 2rem;
 
   form {
-    margin: 1.5rem auto;
+    margin: 2rem auto;
     width: fit-content;
   }
 
@@ -69,7 +69,7 @@ const Form = ({ isActive }: ContactMediumProps): JSX.Element => {
     <Outline isSelected={isActive}>
       <div>
         <h1>Reach Out</h1>
-        <p>primitive :(</p>
+        <p>primitive :/</p>
       </div>
       <form onSubmit={handleMailSend}>
         <div>
