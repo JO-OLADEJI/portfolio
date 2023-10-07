@@ -2,7 +2,7 @@ import React from "react";
 
 // components
 import Nav from "../components/Nav";
-import Footer from "../components/Footer";
+import Socials from "../components/Socials";
 
 // types
 import { Pages } from "../types";
@@ -16,7 +16,7 @@ const Home = (): JSX.Element => {
         <li>Codeographer Introduction</li>
       </ul>
 
-      <Footer />
+      <Socials />
     </div>
   );
 };

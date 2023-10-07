@@ -7,7 +7,7 @@ import Form from "../components/Form";
 import Terminal from "../components/Terminal";
 import Canvas from "../components/Canvas";
 import Meeting from "../components/Meeting";
-import Footer from "../components/Footer";
+import Socials from "../components/Socials";
 
 // types
 import { Pages } from "../types";
@@ -110,7 +110,7 @@ const Contact = (): JSX.Element => {
       <Canvas isActive={currentTab === "canvas"} />
       <Meeting isActive={currentTab === "meeting"} />
 
-      <Footer />
+      <Socials />
     </div>
   );
 };

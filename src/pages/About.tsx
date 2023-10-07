@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 // components
 import Nav from "../components/Nav";
-import Footer from "../components/Footer";
+import Socials from "../components/Socials";
 
 // assets / data
 import headshotImg from "../assets/headshot.jpg";
@@ -231,7 +231,7 @@ const About = (): JSX.Element => {
           ></iframe>
         </OthersOutline>
 
-        <Footer />
+        <Socials />
       </Outline>
     </div>
   );

@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 // components
 import Nav from "../components/Nav";
-import Footer from "../components/Footer";
+import Socials from "../components/Socials";
 
 // types
 import { Pages } from "../types";
@@ -80,7 +80,7 @@ const Portfolio = (): JSX.Element => {
         <button>View Project</button>
       </ProjectDetails>
 
-      <Footer />
+      <Socials />
     </Outline>
   );
 };
