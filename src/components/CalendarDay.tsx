@@ -1,9 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-// types
-import { Schedule } from "../types";
-
 const Column = styled.div`
   padding: 1.5rem;
   border-radius: 1.5rem;
@@ -23,31 +20,43 @@ const Column = styled.div`
     margin-bottom: 2rem;
     font-size: 0.8rem;
   }
+`;
 
-  li {
-    list-style-type: none;
-    border: 1px solid #e8e8e8;
-    padding: 0.7rem 1.4rem;
-    border-radius: 2rem;
-    margin-bottom: 1rem;
-    cursor: pointer;
-    font-size: 1.2rem;
-    background-color: white;
-    color: #6a6a6a;
-  }
+const TimeBtn = styled.li<{ disabled: boolean; selected: boolean }>`
+  list-style-type: none;
+  border: 1px solid #e8e8e8;
+  padding: 0.7rem 1.4rem;
+  border-radius: 2rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  background-color: ${({ selected }) => (selected ? "#6a6a6a" : "#ffffff")};
+  color: ${({ selected }) => (selected ? "#ffffff" : "#6a6a6a")};
 
-  li:hover {
-    background-color: #6a6a6a;
+  ${({ disabled, selected }) =>
+    disabled
+      ? `
+    cursor: not-allowed;
+    opacity: 50%;
+  `
+      : !selected
+      ? `
+  &:hover {
+    background-color: #bbbbbb;
     color: #ffffff;
   }
+  `
+      : null}
 `;
 
 interface CalendarDayProps {
-  date: number;
   day: string;
-  booked: Schedule[];
+  date: number;
+  booked: number[];
   timezone: string;
   meetingTimestamps: Date[];
+  selectedTime: Date | undefined;
+  reserveTime: (disabled: boolean, time: Date) => void;
 }
 
 const CalendarDay = ({
@@ -55,6 +64,8 @@ const CalendarDay = ({
   date,
   booked,
   timezone,
+  reserveTime,
+  selectedTime,
   meetingTimestamps,
 }: CalendarDayProps): JSX.Element => {
   return (
@@ -64,12 +75,17 @@ const CalendarDay = ({
       <span>({timezone})</span>
       <ul>
         {meetingTimestamps.map((time, index) => (
-          <li key={index}>
+          <TimeBtn
+            key={index}
+            disabled={booked.includes(time.valueOf())}
+            selected={time.valueOf() === selectedTime?.valueOf()}
+            onClick={() => reserveTime(booked.includes(time.valueOf()), time)}
+          >
             {time.getHours()}:
             {time.getMinutes() < 10
               ? `0${time.getMinutes()}`
               : time.getMinutes()}
-          </li>
+          </TimeBtn>
         ))}
       </ul>
     </Column>

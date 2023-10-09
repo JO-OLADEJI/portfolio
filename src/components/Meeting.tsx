@@ -4,8 +4,10 @@ import styled from "styled-components";
 // components
 import CalendarDay from "./CalendarDay";
 
-// types
-import { ContactMediumProps } from "../types";
+// types, utils, constants
+import { ContactMediumProps, MeetingDay } from "../types";
+import { MEETING_TIME } from "../constants";
+import { getDayname } from "../utils";
 
 const Outline = styled.div<{ isSelected: boolean }>`
   display: ${({ isSelected }) => (isSelected ? "block" : "none")};
@@ -60,45 +62,10 @@ const Calendar = styled.div`
   align-items: center;
 `;
 
-interface MeetingDay {
-  timestamp: number; // day start (midnight) timestamp
-  date: number;
-  day: string;
-  schedule: Date[];
-}
-
-const getDayname = (day: number): string => {
-  switch (day) {
-    case 0:
-      return "sun";
-    case 1:
-      return "mon";
-    case 2:
-      return "tue";
-    case 3:
-      return "wed";
-    case 4:
-      return "thu";
-    case 5:
-      return "fri";
-    case 6:
-      return "sat";
-    default:
-      return "NIL";
-  }
-};
-
-const MEETING_TIME = {
-  "10:00": 10 * 60 * 60 * 1000,
-  "10:30": 10.5 * 60 * 60 * 1000,
-  "11:00": 11 * 60 * 60 * 1000,
-  "11:30": 11.5 * 60 * 60 * 1000,
-  "12:00": 12 * 60 * 60 * 1000,
-};
-
 const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
   const [timezone, setTimezone] = useState<string>("-");
   const [meetingDays, setMeetingDays] = useState<MeetingDay[]>([]);
+  const [selectedTime, setSelectedTime] = useState<Date>();
   const [email, setEmail] = useState<string>("");
   const [brand, setBrand] = useState<string>("");
   const [memorandum, setMemorandum] = useState<string>("");
@@ -139,7 +106,16 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
 
   const handleMeetingSchedule = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+
     // TODO: async code here
+    // 1. throw visual error if no time has been selected
+    // 2. create an object containing the selected time, email, brand & memorandum
+    // 3. send the object as a mail to contact@thecodeographer.com
+  };
+
+  const handleTimeReserve = (disabled: boolean, time: Date): void => {
+    if (disabled) return;
+    setSelectedTime(() => time);
   };
 
   return (
@@ -158,10 +134,13 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
               day={mDay.day}
               booked={[]}
               timezone={timezone}
+              selectedTime={selectedTime}
               meetingTimestamps={mDay.schedule}
+              reserveTime={handleTimeReserve}
             />
           ))}
         </Calendar>
+
         <form onSubmit={handleMeetingSchedule}>
           <div>
             <label htmlFor="email-1">Email</label>
@@ -192,7 +171,7 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
             />
           </div>
 
-          <button>Schedule</button>
+          <button type="submit">Schedule</button>
         </form>
       </Content>
     </Outline>
