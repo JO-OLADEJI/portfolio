@@ -46,7 +46,7 @@ interface CalendarDayProps {
 const CalendarDay = ({ day, date, booked }: CalendarDayProps): JSX.Element => {
   return (
     <Column>
-      <p>{day}</p>
+      <p>{day.charAt(0).toUpperCase() + day.slice(1).toLowerCase()}</p>
       <h1>{date}</h1>
       <ul>
         {MORNING.map((time, index) => (

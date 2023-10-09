@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 // components
@@ -60,17 +60,52 @@ const Calendar = styled.div`
   align-items: center;
 `;
 
+interface MeetingDay {
+  date: number;
+  day: string;
+}
+
+const getDayname = (day: number): string => {
+  switch (day) {
+    case 0:
+      return "sun";
+    case 1:
+      return "mon";
+    case 2:
+      return "tue";
+    case 3:
+      return "wed";
+    case 4:
+      return "thu";
+    case 5:
+      return "fri";
+    case 6:
+      return "sat";
+    default:
+      return "NIL";
+  }
+};
+
 const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
-  const [data] = useState([
-    { day: "Thu", date: 5 },
-    { day: "Fri", date: 6 },
-    { day: "Mon", date: 9 },
-    { day: "Tue", date: 10 },
-    { day: "Wed", date: 11 },
-  ]);
+  const [meetingDays, setMeetingDays] = useState<MeetingDay[]>([]);
   const [email, setEmail] = useState<string>("");
   const [brand, setBrand] = useState<string>("");
   const [memorandum, setMemorandum] = useState<string>("");
+
+  useEffect(() => {
+    const leeway: MeetingDay[] = [];
+    const now = new Date();
+    const MILLISECONDS_IN_A_DAY = 60 * 60 * 24 * 1000;
+
+    for (let i = 1; i <= 5; i++) {
+      const currentDate = new Date(now.valueOf() + MILLISECONDS_IN_A_DAY * i);
+      leeway.push({
+        date: currentDate.getDate(),
+        day: getDayname(currentDate.getDay()),
+      });
+    }
+    setMeetingDays(() => leeway);
+  }, []);
 
   const handleMeetingSchedule = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -86,11 +121,11 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
 
       <Content>
         <Calendar>
-          {data.map((datum, index) => (
+          {meetingDays.map((mDay, index) => (
             <CalendarDay
               key={index}
-              date={datum.date}
-              day={datum.day}
+              date={mDay.date}
+              day={mDay.day}
               booked={[]}
             />
           ))}
