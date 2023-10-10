@@ -4,6 +4,9 @@ import styled from "styled-components";
 // components
 import CalendarDay from "./CalendarDay";
 
+// assets
+import leftChevron from "../assets/left-chevron.png";
+
 // types, utils, constants
 import { ContactMediumProps, MeetingDay } from "../types";
 import { MEETING_TIME } from "../constants";
@@ -12,7 +15,7 @@ import { getDayname } from "../utils";
 const Outline = styled.div<{ isSelected: boolean }>`
   display: ${({ isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 3rem;
 
   form {
     width: fit-content;
@@ -48,7 +51,7 @@ const Outline = styled.div<{ isSelected: boolean }>`
 `;
 
 const Content = styled.div`
-  margin: 2rem 0;
+  margin: 3rem 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,6 +63,42 @@ const Calendar = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  position: relative;
+`;
+
+const CalendarBtn = styled.button<{ disabled: boolean }>`
+  position: absolute;
+  top: 50%;
+  background-color: transparent;
+  border: none;
+
+  img {
+    width: 2.5rem;
+    border-radius: 50%;
+    border: 1px solid #858585;
+    padding: 0.3rem;
+    cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+    opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
+    background-color: #e8e8e8;
+  }
+
+  img:hover {
+    background-color: ${({ disabled }) => (disabled ? "#e8e8e8" : "#bbbbbb")};
+  }
+`;
+
+const LeftBtn = styled(CalendarBtn)`
+  left: 0;
+  transform: translate(-50%, -50%);
+`;
+
+const RightBtn = styled(CalendarBtn)`
+  right: 0;
+  transform: translate(50%, -50%);
+
+  img {
+    rotate: 180deg;
+  }
 `;
 
 const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
@@ -69,6 +108,8 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
   const [email, setEmail] = useState<string>("");
   const [brand, setBrand] = useState<string>("");
   const [memorandum, setMemorandum] = useState<string>("");
+  const [indexA, setIndexA] = useState<number>(0);
+  const [indexB, setIndexB] = useState<number>(5);
 
   useEffect(() => {
     const leeway: MeetingDay[] = [];
@@ -84,8 +125,10 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
     }
 
     const MILLISECONDS_IN_A_DAY = 60 * 60 * 24 * 1000;
-    for (let i = 1; i <= 5; i++) {
-      const currentDate = new Date(now.valueOf() + MILLISECONDS_IN_A_DAY * i);
+    for (let i = 1; i <= 14; i++) {
+      const currentDate = new Date(
+        now.valueOf() + MILLISECONDS_IN_A_DAY + MILLISECONDS_IN_A_DAY * i
+      );
       currentDate.setHours(0, 0, 0, 0);
 
       leeway.push({
@@ -103,6 +146,26 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
     }
     setMeetingDays(() => leeway);
   }, []);
+
+  const scrollCalenderLeft = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): void => {
+    e.preventDefault();
+    if (indexA > 0) {
+      setIndexA(() => indexA - 1);
+      setIndexB(() => indexB - 1);
+    }
+  };
+
+  const scrollCalenderRight = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): void => {
+    e.preventDefault();
+    if (indexB < 10) {
+      setIndexA(() => indexA + 1);
+      setIndexB(() => indexB + 1);
+    }
+  };
 
   const handleMeetingSchedule = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -127,18 +190,27 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
 
       <Content>
         <Calendar>
-          {meetingDays.map((mDay, index) => (
-            <CalendarDay
-              key={index}
-              date={mDay.date}
-              day={mDay.day}
-              booked={[]}
-              timezone={timezone}
-              selectedTime={selectedTime}
-              meetingTimestamps={mDay.schedule}
-              reserveTime={handleTimeReserve}
-            />
-          ))}
+          <LeftBtn disabled={indexA === 0} onClick={scrollCalenderLeft}>
+            <img src={leftChevron} alt="left" />
+          </LeftBtn>
+          {meetingDays
+            .filter((mDay) => mDay.day !== "sat" && mDay.day !== "sun")
+            .slice(indexA, indexB)
+            .map((mDay, index) => (
+              <CalendarDay
+                key={index}
+                date={mDay.date}
+                day={mDay.day}
+                booked={[]}
+                timezone={timezone}
+                selectedTime={selectedTime}
+                meetingTimestamps={mDay.schedule}
+                reserveTime={handleTimeReserve}
+              />
+            ))}
+          <RightBtn disabled={indexB === 10} onClick={scrollCalenderRight}>
+            <img src={leftChevron} alt="right" />
+          </RightBtn>
         </Calendar>
 
         <form onSubmit={handleMeetingSchedule}>

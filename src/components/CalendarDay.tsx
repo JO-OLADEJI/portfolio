@@ -5,6 +5,7 @@ const Column = styled.div`
   padding: 1.5rem;
   border-radius: 1.5rem;
   background-color: #f9f9f8;
+  width: fit-content;
 
   p {
     margin-bottom: 0.7rem;
@@ -24,7 +25,7 @@ const Column = styled.div`
 
 const TimeBtn = styled.li<{ disabled: boolean; selected: boolean }>`
   list-style-type: none;
-  border: 1px solid #e8e8e8;
+  border: 1px solid ${({ selected }) => (selected ? "#6a6a6a" : "#e8e8e8")};
   padding: 0.7rem 1.4rem;
   border-radius: 2rem;
   margin-bottom: 1rem;

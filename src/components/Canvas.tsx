@@ -7,11 +7,11 @@ import { ContactMediumProps } from "../types";
 const Outline = styled.div<{ isSelected: boolean }>`
   display: ${({ isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 3rem;
 `;
 
 const BoardOutline = styled.div`
-  margin: 2rem auto;
+  margin: 3rem auto;
   width: 70rem;
   height: 32rem;
   background-color: black;
