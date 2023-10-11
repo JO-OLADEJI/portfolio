@@ -56,7 +56,7 @@ interface CalendarDayProps {
   booked: number[];
   timezone: string;
   meetingTimestamps: Date[];
-  selectedTime: Date | undefined;
+  selectedTime: Date | null;
   reserveTime: (disabled: boolean, time: Date) => void;
 }
 

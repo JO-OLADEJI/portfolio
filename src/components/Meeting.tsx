@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import Joi from "joi";
 
 // components
 import CalendarDay from "./CalendarDay";
@@ -10,22 +11,26 @@ import leftChevron from "../assets/left-chevron.png";
 // types, utils, constants
 import { ContactMediumProps, MeetingDay } from "../types";
 import { MEETING_TIME } from "../constants";
-import { getDayname } from "../utils";
+import { getDayname, addBookedTimestampsToDB, getBookedTimestampsFromDB } from "../utils";
 
 const Outline = styled.div<{ isSelected: boolean }>`
   display: ${({ isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
   margin-top: 3rem;
+`;
 
-  form {
-    width: fit-content;
-    height: fit-content;
-  }
+const Form = styled.form`
+  width: fit-content;
+  height: fit-content;
 
-  form > div {
+  div {
     width: 25rem;
     position: relative;
     margin: 1rem 0;
+  }
+
+  div:nth-child(3) {
+    position: relative;
   }
 
   input,
@@ -45,9 +50,25 @@ const Outline = styled.div<{ isSelected: boolean }>`
     position: absolute;
     top: 0;
     left: 1.5rem;
+    font-size: 0.85rem;
     transform: translate(0, -50%);
     cursor: pointer;
   }
+
+  textarea:focus + #text-count {
+    background-color: #6a6a6a;
+  }
+`;
+
+const TextCount = styled.p`
+  position: absolute;
+  bottom: 1rem;
+  right: 0.8rem;
+  color: #ffffff;
+  background-color: #bbbbbb;
+  border-radius: 1rem;
+  font-size: 0.7rem;
+  padding: 0.5rem;
 `;
 
 const Content = styled.div`
@@ -101,10 +122,19 @@ const RightBtn = styled(CalendarBtn)`
   }
 `;
 
+const schema = Joi.object({
+  email: Joi.string()
+    .email({ tlds: { allow: false } })
+    .required(),
+  brand: Joi.string().min(2).required(),
+  memorandum: Joi.string().min(5).max(300),
+});
+
 const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
   const [timezone, setTimezone] = useState<string>("-");
   const [meetingDays, setMeetingDays] = useState<MeetingDay[]>([]);
-  const [selectedTime, setSelectedTime] = useState<Date>();
+  const [selectedTime, setSelectedTime] = useState<Date | null>(null);
+  const [bookedTimestamps, setBookedTimestamps] = useState<number[]>([]);
   const [email, setEmail] = useState<string>("");
   const [brand, setBrand] = useState<string>("");
   const [memorandum, setMemorandum] = useState<string>("");
@@ -144,7 +174,10 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
         ],
       });
     }
+
+    const scheduledTimestamps = getBookedTimestampsFromDB();
     setMeetingDays(() => leeway);
+    setBookedTimestamps(() => scheduledTimestamps);
   }, []);
 
   const scrollCalenderLeft = (
@@ -172,8 +205,30 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
 
     // TODO: async code here
     // 1. throw visual error if no time has been selected
-    // 2. create an object containing the selected time, email, brand & memorandum
-    // 3. send the object as a mail to contact@thecodeographer.com
+    if (!selectedTime) {
+      return alert("meeting time NOT selected!");
+    }
+
+    // 2. create an object containing the selected time, email, brand & memorandum + validation
+    const formInput = { email, brand, memorandum };
+    const { value, error } = schema.validate(formInput);
+    if (error) {
+      return alert(error.details[0].message);
+    }
+    value.meetingTime = selectedTime.toString();
+
+    // 3. send the object (`value`) as a mail to contact@thecodeographer.com
+    console.log({ mail: value });
+
+    // 4. Add timestamp to db
+    const scheduledTimestamps = addBookedTimestampsToDB(selectedTime);
+    setBookedTimestamps(() => scheduledTimestamps);
+
+    // 5. clear meeting inputs
+    setSelectedTime(null);
+    setEmail("");
+    setBrand("");
+    setMemorandum("");
   };
 
   const handleTimeReserve = (disabled: boolean, time: Date): void => {
@@ -201,7 +256,7 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
                 key={index}
                 date={mDay.date}
                 day={mDay.day}
-                booked={[]}
+                booked={bookedTimestamps}
                 timezone={timezone}
                 selectedTime={selectedTime}
                 meetingTimestamps={mDay.schedule}
@@ -213,7 +268,7 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
           </RightBtn>
         </Calendar>
 
-        <form onSubmit={handleMeetingSchedule}>
+        <Form onSubmit={handleMeetingSchedule}>
           <div>
             <label htmlFor="email-1">Email</label>
             <input
@@ -239,12 +294,17 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
             <textarea
               id="memorandum-1"
               value={memorandum}
-              onChange={(e) => setMemorandum(e.target.value)}
+              onChange={(e) =>
+                e.target.value.length <= 300
+                  ? setMemorandum(e.target.value)
+                  : null
+              }
             />
+            <TextCount id="text-count">{memorandum.length}/300</TextCount>
           </div>
 
           <button type="submit">Schedule</button>
-        </form>
+        </Form>
       </Content>
     </Outline>
   );
