@@ -11,7 +11,11 @@ import leftChevron from "../assets/left-chevron.png";
 // types, utils, constants
 import { ContactMediumProps, MeetingDay } from "../types";
 import { MEETING_TIME } from "../constants";
-import { getDayname, addBookedTimestampsToDB, getBookedTimestampsFromDB } from "../utils";
+import {
+  getDayname,
+  addBookedTimestampsToDB,
+  getBookedTimestampsFromDB,
+} from "../utils";
 
 const Outline = styled.div<{ isSelected: boolean }>`
   display: ${({ isSelected }) => (isSelected ? "block" : "none")};
@@ -22,6 +26,10 @@ const Outline = styled.div<{ isSelected: boolean }>`
 const Form = styled.form`
   width: fit-content;
   height: fit-content;
+
+  button {
+    cursor: pointer;
+  }
 
   div {
     width: 25rem;
@@ -122,14 +130,6 @@ const RightBtn = styled(CalendarBtn)`
   }
 `;
 
-const schema = Joi.object({
-  email: Joi.string()
-    .email({ tlds: { allow: false } })
-    .required(),
-  brand: Joi.string().min(2).required(),
-  memorandum: Joi.string().min(5).max(300),
-});
-
 const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
   const [timezone, setTimezone] = useState<string>("-");
   const [meetingDays, setMeetingDays] = useState<MeetingDay[]>([]);
@@ -211,7 +211,14 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
 
     // 2. create an object containing the selected time, email, brand & memorandum + validation
     const formInput = { email, brand, memorandum };
-    const { value, error } = schema.validate(formInput);
+    const { value, error } = Joi.object({
+      email: Joi.string()
+        .email({ tlds: { allow: false } })
+        .required(),
+      brand: Joi.string().min(2).required(),
+      memorandum: Joi.string().min(5).max(300),
+    }).validate(formInput);
+
     if (error) {
       return alert(error.details[0].message);
     }

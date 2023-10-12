@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import Joi from "joi";
 
 // types
 import { ContactMediumProps } from "../types";
@@ -8,13 +9,17 @@ const Outline = styled.div<{ isSelected: boolean }>`
   display: ${({ isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
   margin-top: 3rem;
+`;
 
-  form {
-    margin: 3rem auto;
-    width: fit-content;
+const FormElement = styled.form`
+  margin: 3rem auto;
+  width: fit-content;
+
+  button {
+    cursor: pointer;
   }
 
-  form > div {
+  div {
     width: 30rem;
     position: relative;
     margin: 1rem 0;
@@ -27,8 +32,12 @@ const Outline = styled.div<{ isSelected: boolean }>`
   }
 
   textarea {
-    height: 10rem;
+    height: 15rem;
     resize: none;
+  }
+
+  textarea:focus + #text-count-form {
+    background-color: #6a6a6a;
   }
 
   label {
@@ -46,6 +55,25 @@ const Outline = styled.div<{ isSelected: boolean }>`
   }
 `;
 
+const TextCount = styled.p`
+  position: absolute;
+  bottom: 1rem;
+  right: 0.8rem;
+  color: #ffffff;
+  background-color: #bbbbbb;
+  border-radius: 1rem;
+  font-size: 0.7rem;
+  padding: 0.5rem;
+`;
+
+const schema = Joi.object({
+  name: Joi.string().min(3).max(50),
+  email: Joi.string()
+    .email({ tlds: { allow: false } })
+    .required(),
+  message: Joi.string().min(5).max(300),
+});
+
 const Form = ({ isActive }: ContactMediumProps): JSX.Element => {
   const [contactMail] = useState<string>("dejijolaoluwa@gmail.com");
   const [name, setName] = useState<string>("");
@@ -62,7 +90,21 @@ const Form = ({ isActive }: ContactMediumProps): JSX.Element => {
 
   const handleMailSend = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+
     // TODO: async code here
+    // 1. validate input values
+    const { value, error } = schema.validate({ name, email, message });
+    if (error) {
+      return alert(error.details[0].message);
+    }
+
+    // 2. send the value object to contact@thecodeographer.com
+    console.log({ mail: value });
+
+    // 3. clear inputs
+    setName("");
+    setEmail("");
+    setMessage("");
   };
 
   return (
@@ -71,7 +113,8 @@ const Form = ({ isActive }: ContactMediumProps): JSX.Element => {
         <h1>Reach Out</h1>
         <p>primitive :/</p>
       </div>
-      <form onSubmit={handleMailSend}>
+
+      <FormElement onSubmit={handleMailSend}>
         <div>
           <label htmlFor="name">Name</label>
           <input
@@ -97,12 +140,16 @@ const Form = ({ isActive }: ContactMediumProps): JSX.Element => {
           <textarea
             id="message"
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={(e) =>
+              e.target.value.length <= 300 ? setMessage(e.target.value) : null
+            }
           />
+          <TextCount id="text-count-form">{message.length}/300</TextCount>
         </div>
 
-        <button>Dispatch</button>
-      </form>
+        <button type="submit">Dispatch</button>
+      </FormElement>
+
       <div>
         <p>
           Or send a mail directly to: <span>{contactMail}</span>{" "}
