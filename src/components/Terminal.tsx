@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 // types
@@ -21,7 +21,28 @@ const Interface = styled.div`
   padding: 0.5rem;
 `;
 
+const CurrentInput = styled.p`
+  position: relative;
+  width: fit-content;
+`;
+
+const Caret = styled.span`
+  position: absolute;
+  bottom: 0;
+  right: -1rem;
+  width: 0.5rem;
+  height: 1rem;
+  background-color: black;
+  border: 1px solid black;
+`;
+
 const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
+  const [sessionTimeIn, setSessionTimeIn] = useState<Date>();
+
+  useEffect(() => {
+    setSessionTimeIn(() => new Date());
+  }, []);
+
   return (
     <Outline isSelected={isActive}>
       <div>
@@ -30,9 +51,15 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
       </div>
 
       <Interface>
-        <p>Last login: Fri Sep 29 06:42:17 on console</p>
-        <p>You have new mail.</p>
-        <p>guestuser@thecodeographer.com ~ %</p>
+        <p>
+          Session login: {sessionTimeIn?.toDateString().slice(0, -4)}{" "}
+          {sessionTimeIn?.toTimeString().slice(0, 8)} on console
+        </p>
+        <p>Logged in as guest.</p>
+        <CurrentInput>
+          guestuser@thecodeographer.com ~ %
+          <Caret />
+        </CurrentInput>
       </Interface>
     </Outline>
   );
