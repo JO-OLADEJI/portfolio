@@ -1,23 +1,66 @@
 import React from "react";
+import styled from "styled-components";
 
-interface TerminalLogsProps {
+// types
+import { TerminalNode } from "../types";
+
+const ResponseText = styled.p`
+  color: red;
+`;
+
+interface CommandLogProps {
   terminalPrompt: string;
-  commandLiteral: string;
+  commandLiteral: string | TerminalNode[];
 }
 
 export const CommandLog = ({
   terminalPrompt,
   commandLiteral,
-}: TerminalLogsProps): JSX.Element => {
-  return <p>{`[${terminalPrompt} ${commandLiteral}`}</p>;
+}: CommandLogProps): JSX.Element => {
+  if (typeof commandLiteral === "string") {
+    return <p>{`[${terminalPrompt} ${commandLiteral}`}</p>;
+  }
+  return (
+    <>
+      {commandLiteral.map((literal, index) => (
+        <p key={index}>{literal}</p>
+      ))}
+    </>
+  );
 };
 
-interface TerminalErrorLogProps {
-  errorLiteral: string;
+interface ResponseLogProps {
+  responseLiteral: string | TerminalNode[];
 }
 
-export const ErrorLog = ({
-  errorLiteral,
-}: TerminalErrorLogProps): JSX.Element => {
-  return <p>{errorLiteral}</p>;
+export const ResponseLog = ({
+  responseLiteral,
+}: ResponseLogProps): JSX.Element => {
+  if (typeof responseLiteral === "string") {
+    return <ResponseText>{responseLiteral}</ResponseText>;
+  }
+  return (
+    <>
+      {responseLiteral.map((literal, index) => (
+        <ResponseText key={index}>{literal}</ResponseText>
+      ))}
+    </>
+  );
+};
+
+interface ErrorLogProps {
+  errorLiteral: string | TerminalNode[];
+}
+
+export const ErrorLog = ({ errorLiteral }: ErrorLogProps): JSX.Element => {
+  if (typeof errorLiteral === "string") {
+    return <p>{errorLiteral}</p>;
+  }
+  return (
+    <>
+      {errorLiteral.map((literal, index) => (
+        <p key={index}>{literal}</p>
+      ))}
+    </>
+  );
 };

@@ -2,11 +2,12 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import styled from "styled-components";
 
 // components
-import { CommandLog, ErrorLog } from "./Logs";
+import { CommandLog, ResponseLog, ErrorLog } from "./Logs";
 
-// types, constants
+// types, constants, utils
 import { Command, ContactMediumProps, Log } from "../types";
 import { COMMAND_LIST } from "../constants";
+import { getCommandResponse } from "../utils/terminal";
 
 const Outline = styled.div<{ isSelected: boolean }>`
   display: ${({ isSelected }) => (isSelected ? "block" : "none")};
@@ -82,8 +83,15 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
         // case 3: valid command
         else if (COMMAND_LIST.includes(inputtedCommand)) {
           if (inputtedCommand === "clear" && inputtedWords.length === 1) {
+            setCommand("");
             return setTerminalLogs(() => []);
           }
+
+          const response = getCommandResponse(
+            inputtedCommand,
+            command.trim().slice(inputtedCommand.length + 1)
+          );
+          logsCopy.push(response);
           // case 1: invalid payload: anything that doesn't conform to that rule is invalid
           // case 2: valid payload: define rule that checks for the validity of a command
         }
@@ -124,6 +132,8 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
               terminalPrompt={TERMINAL_PROMPT}
               commandLiteral={log.literal}
             />
+          ) : log.type === "response" ? (
+            <ResponseLog key={index} responseLiteral={log.literal} />
           ) : log.type === "error" ? (
             <ErrorLog key={index} errorLiteral={log.literal} />
           ) : null

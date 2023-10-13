@@ -20,10 +20,11 @@ export interface MeetingDay {
 }
 
 export type LogType = "command" | "error" | "response";
+export type TerminalNode = string | JSX.Element;
 
 export type Command = (typeof COMMAND_LIST)[number];
 
 export interface Log {
   type: LogType;
-  literal: string;
+  literal: string | TerminalNode[];
 }
