@@ -1,3 +1,5 @@
+import { COMMAND_LIST } from "../constants";
+
 export enum Pages {
   Home,
   About,
@@ -15,4 +17,13 @@ export interface MeetingDay {
   date: number;
   day: string;
   schedule: Date[];
+}
+
+export type LogType = "command" | "error" | "response";
+
+export type Command = (typeof COMMAND_LIST)[number];
+
+export interface Log {
+  type: LogType;
+  literal: string;
 }

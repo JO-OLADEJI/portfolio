@@ -4,8 +4,9 @@ import styled from "styled-components";
 // components
 import { CommandLog, ErrorLog } from "./Logs";
 
-// types
-import { ContactMediumProps } from "../types";
+// types, constants
+import { Command, ContactMediumProps, Log } from "../types";
+import { COMMAND_LIST } from "../constants";
 
 const Outline = styled.div<{ isSelected: boolean }>`
   display: ${({ isSelected }) => (isSelected ? "block" : "none")};
@@ -49,41 +50,49 @@ const NewLine = styled.p`
   top: 0;
 `;
 
-type LogType = "command" | "error";
-interface Log {
-  type: LogType;
-  literal: string;
-}
-
 const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
   const TERMINAL_PROMPT = "guestuser@thecodeographer.com ~ %";
   const [sessionTimeIn, setSessionTimeIn] = useState<Date>();
   const [command, setCommand] = useState<string>("");
-  const [commandList] = useState<string[]>(["code", "graph"]);
   const [terminalLogs, setTerminalLogs] = useState<Log[]>([]);
   const defaultCmdInput = useRef<HTMLTextAreaElement>(null);
 
   const RETURN_keyDown = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === "Enter") {
+        const inputtedWords: string[] = command.trim().split(" ");
+        const inputtedCommand: Command = inputtedWords[0] as Command;
+
         const log: Log = { type: "command", literal: command };
         const logsCopy = [...terminalLogs];
         logsCopy.push(log);
 
-        // TODO: edit filter to only pick the first word
-        if (!commandList.includes(command)) {
+        // case 1: check for empty string
+        if (!inputtedCommand) {
+          // pass
+        }
+        // case 2: check for invalid command
+        else if (!COMMAND_LIST.includes(inputtedCommand)) {
           const error: Log = {
             type: "error",
-            literal: `cdgsh - command not found: ${command}`,
+            literal: `cdgsh - command not found: ${inputtedCommand}`,
           };
           logsCopy.push(error);
+        }
+        // case 3: valid command
+        else if (COMMAND_LIST.includes(inputtedCommand)) {
+          if (inputtedCommand === "clear" && inputtedWords.length === 1) {
+            return setTerminalLogs(() => []);
+          }
+          // case 1: invalid payload: anything that doesn't conform to that rule is invalid
+          // case 2: valid payload: define rule that checks for the validity of a command
         }
 
         setCommand("");
         setTerminalLogs(() => logsCopy);
       }
     },
-    [command, commandList, terminalLogs]
+    [command, terminalLogs]
   );
 
   useEffect(() => {
