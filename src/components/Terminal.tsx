@@ -85,22 +85,30 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
           break;
 
         case "decode":
-          // iterate over terminalFiles[$filename] and log out all keys and values
+          if (payload) {
+            CMD_RESPONSE.literal = !terminalFiles[payload]
+              ? `file "${payload}" does not exist`
+              : JSON.stringify(terminalFiles[payload]);
+            return CMD_RESPONSE;
+          }
           break;
+
         case "memo config":
           break;
+
         case "graph":
           // make sure $filename exists
           // validate terminalFiles[$filename] with joi
           // hit api endpoint to send request
           break;
+
         case "help":
           CMD_RESPONSE.literal = getHelpResponse();
           return CMD_RESPONSE;
+
         case "clear":
-          // console.log("clear command running");
-          // setTerminalLogs(() => []);
           return;
+
         default:
           break;
       }
