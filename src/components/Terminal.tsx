@@ -54,17 +54,21 @@ const NewLine = styled.p`
 const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
   const TERMINAL_PROMPT = "guestuser@thecodeographer.com ~ %";
   const [sessionTimeIn, setSessionTimeIn] = useState<Date>();
-  const [command, setCommand] = useState<string>("");
+  const [commandLiteral, setCommandLiteral] = useState<string>("");
   const [terminalLogs, setTerminalLogs] = useState<Log[]>([]);
   const [terminalFiles, setTerminalFiles] = useState<{
     [key: string]: TerminalMessage;
   }>({});
+  const [activeFile, setActiveFile] = useState<string>("");
   const defaultCmdInput = useRef<HTMLTextAreaElement>(null);
 
   const getCommandResponse = useCallback(
     (command: Command, payload: string | undefined): Log | undefined => {
       const CMD_RESPONSE: Log = { type: "response", literal: "" };
-      const CMD_ERROR: Log = { type: "error", literal: "" };
+      const CMD_ERROR: Log = {
+        type: "error",
+        literal: "invalid command syntax :/",
+      };
 
       if (!CMD_RULE[command].test(`${command} ${payload ?? ""}`))
         return CMD_ERROR;
@@ -74,12 +78,13 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
           const storedFiles = { ...terminalFiles };
           if (payload) {
             if (terminalFiles[payload]) {
-              CMD_RESPONSE.literal = `file "${payload}" already exists`;
+              CMD_RESPONSE.literal = `file already exists. writing to '${payload}'`;
             } else {
               storedFiles[payload] = NEW_TERMINAL_MESSAGE;
               setTerminalFiles(() => storedFiles);
-              CMD_RESPONSE.literal = `created file: "${payload}"`;
+              CMD_RESPONSE.literal = `created file. writing to '${payload}'`;
             }
+            setActiveFile(payload);
             return CMD_RESPONSE;
           }
           break;
@@ -94,6 +99,32 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
           break;
 
         case "memo config":
+          if (!activeFile) {
+            CMD_RESPONSE.literal =
+              "no files found. create a new file using the `code` command.";
+            return CMD_RESPONSE;
+          }
+
+          const keyExtract = commandLiteral
+            .trim()
+            .match(new RegExp(/guest.\w+/));
+          const valueExtract = commandLiteral
+            .trim()
+            .match(new RegExp(/"[\w\s,.@!?]+"/));
+
+          if (keyExtract && valueExtract && activeFile) {
+            const key = keyExtract[0].replace("guest.", "");
+            const value = valueExtract[0].replace(/"/g, "");
+            const storedFiles = { ...terminalFiles };
+            storedFiles[activeFile] = {
+              ...storedFiles[activeFile],
+              [key]: value,
+            };
+
+            setTerminalFiles(() => storedFiles);
+            CMD_RESPONSE.literal = "";
+            return CMD_RESPONSE;
+          }
           break;
 
         case "graph":
@@ -103,10 +134,12 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
           break;
 
         case "help":
+          if (payload) return CMD_ERROR;
           CMD_RESPONSE.literal = getHelpResponse();
           return CMD_RESPONSE;
 
         case "clear":
+          if (payload) return CMD_ERROR;
           return;
 
         default:
@@ -115,17 +148,26 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
 
       return CMD_ERROR;
     },
-    [terminalFiles]
+    [terminalFiles, commandLiteral, activeFile]
   );
 
   const RETURN_keyDown = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === "Enter") {
-        const inputtedWords: string[] = command.trim().split(" ");
-        const inputtedCommand: Command = inputtedWords[0] as Command;
+        let inputtedCommand: Command = "" as Command;
+        for (let i = 0; i < COMMAND_LIST.length; i++) {
+          if (commandLiteral.trim().startsWith(`${COMMAND_LIST[i]} `)) {
+            inputtedCommand = COMMAND_LIST[i];
+            break;
+          }
+        }
+        inputtedCommand =
+          !inputtedCommand && commandLiteral.trim().length > 0
+            ? (commandLiteral.trim().split(" ")[0] as Command)
+            : inputtedCommand;
 
         let logsCopy = [...terminalLogs];
-        const log: Log = { type: "command", literal: command };
+        const log: Log = { type: "command", literal: commandLiteral };
         logsCopy.push(log);
 
         if (inputtedCommand && !COMMAND_LIST.includes(inputtedCommand)) {
@@ -137,16 +179,16 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
         } else if (COMMAND_LIST.includes(inputtedCommand)) {
           const response = getCommandResponse(
             inputtedCommand,
-            command.trim().slice(inputtedCommand.length + 1)
+            commandLiteral.trim().slice(inputtedCommand.length + 1)
           );
           response ? logsCopy.push(response) : (logsCopy = []);
         }
 
-        setCommand("");
+        setCommandLiteral("");
         setTerminalLogs(() => logsCopy);
       }
     },
-    [command, terminalLogs, getCommandResponse]
+    [commandLiteral, terminalLogs, getCommandResponse]
   );
 
   useEffect(() => {
@@ -187,9 +229,9 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
         <div>
           <CmdInput
             ref={defaultCmdInput}
-            value={" ".repeat(TERMINAL_PROMPT.length) + command}
+            value={" ".repeat(TERMINAL_PROMPT.length) + commandLiteral}
             onChange={(e) =>
-              setCommand(e.target.value.slice(TERMINAL_PROMPT.length))
+              setCommandLiteral(e.target.value.slice(TERMINAL_PROMPT.length))
             }
           />
           <NewLine>{TERMINAL_PROMPT}</NewLine>
