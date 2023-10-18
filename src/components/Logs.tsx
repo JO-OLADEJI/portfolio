@@ -4,8 +4,14 @@ import styled from "styled-components";
 // types
 import { TerminalNode } from "../types";
 
-const ResponseText = styled.p`
-  color: red;
+const TerminalText = styled.p``;
+
+const ErrorText = styled(TerminalText)`
+  color: #C9140A;
+`;
+
+const ResponseText = styled(TerminalText)`
+  color: #2b9028;
 `;
 
 interface CommandLogProps {
@@ -18,12 +24,12 @@ export const CommandLog = ({
   commandLiteral,
 }: CommandLogProps): JSX.Element => {
   if (typeof commandLiteral === "string") {
-    return <p>{`${terminalPrompt} ${commandLiteral}`}</p>;
+    return <TerminalText>{`${terminalPrompt} ${commandLiteral}`}</TerminalText>;
   }
   return (
     <>
       {commandLiteral.map((literal, index) => (
-        <p key={index}>{literal}</p>
+        <TerminalText key={index}>{literal}</TerminalText>
       ))}
     </>
   );
@@ -54,12 +60,12 @@ interface ErrorLogProps {
 
 export const ErrorLog = ({ errorLiteral }: ErrorLogProps): JSX.Element => {
   if (typeof errorLiteral === "string") {
-    return <p>{errorLiteral}</p>;
+    return <ErrorText>{errorLiteral}</ErrorText>;
   }
   return (
     <>
       {errorLiteral.map((literal, index) => (
-        <p key={index}>{literal}</p>
+        <ErrorText key={index}>{literal}</ErrorText>
       ))}
     </>
   );

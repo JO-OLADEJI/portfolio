@@ -17,9 +17,5 @@ export const getHelpResponse = (): TerminalNode[] => {
     <span>
       - send message file: <b>graph</b> message.txt
     </span>,
-    <span>
-      *to learn more about specific commands, run <b>help -command-</b> i.e{" "}
-      <b>help decode</b>
-    </span>,
   ];
 };

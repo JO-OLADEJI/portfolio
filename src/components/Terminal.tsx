@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import styled from "styled-components";
+import Joi from "joi";
 
 // components
 import { CommandLog, ResponseLog, ErrorLog } from "./Logs";
@@ -13,6 +14,7 @@ const Outline = styled.div<{ isSelected: boolean }>`
   display: ${({ isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
   margin-top: 3rem;
+  font-size: 0.9rem;
 `;
 
 const Interface = styled.div`
@@ -39,6 +41,7 @@ const CmdInput = styled.textarea`
   position: relative;
   resize: none;
   overflow: hidden;
+  font-size: 0.9rem;
 
   &:focus {
     outline: none;
@@ -52,7 +55,7 @@ const NewLine = styled.p`
 `;
 
 const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
-  const TERMINAL_PROMPT = "guestuser@thecodeographer.com ~ %";
+  const TERMINAL_PROMPT = "guestuser@thecodeographer.com ~ % ";
   const [sessionTimeIn, setSessionTimeIn] = useState<Date>();
   const [commandLiteral, setCommandLiteral] = useState<string>("");
   const [terminalLogs, setTerminalLogs] = useState<Log[]>([]);
@@ -65,44 +68,47 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
   const getCommandResponse = useCallback(
     (command: Command, payload: string | undefined): Log | undefined => {
       const CMD_RESPONSE: Log = { type: "response", literal: "" };
-      const CMD_ERROR: Log = {
+      const CMD_ERROR: Log = { type: "error", literal: "" };
+      const DEFAULT_ERROR: Log = {
         type: "error",
         literal: "invalid command syntax :/",
       };
 
       if (!CMD_RULE[command].test(`${command} ${payload ?? ""}`))
-        return CMD_ERROR;
+        return DEFAULT_ERROR;
 
       switch (command) {
         case "code":
           const storedFiles = { ...terminalFiles };
           if (payload) {
             if (terminalFiles[payload]) {
-              CMD_RESPONSE.literal = `file already exists. writing to '${payload}'`;
+              CMD_ERROR.literal = `file already exists. writing to '${payload}'`;
+              setActiveFile(payload);
+              return CMD_ERROR;
             } else {
               storedFiles[payload] = NEW_TERMINAL_MESSAGE;
               setTerminalFiles(() => storedFiles);
               CMD_RESPONSE.literal = `created file. writing to '${payload}'`;
+              setActiveFile(payload);
+              return CMD_RESPONSE;
             }
-            setActiveFile(payload);
-            return CMD_RESPONSE;
           }
           break;
 
         case "decode":
           if (payload) {
-            CMD_RESPONSE.literal = !terminalFiles[payload]
+            CMD_ERROR.literal = !terminalFiles[payload]
               ? `file "${payload}" does not exist`
               : JSON.stringify(terminalFiles[payload]);
-            return CMD_RESPONSE;
+            return CMD_ERROR;
           }
           break;
 
         case "memo config":
           if (!activeFile) {
-            CMD_RESPONSE.literal =
+            CMD_ERROR.literal =
               "no files found. create a new file using the `code` command.";
-            return CMD_RESPONSE;
+            return CMD_ERROR;
           }
 
           const keyExtract = commandLiteral
@@ -128,25 +134,48 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
           break;
 
         case "graph":
-          // make sure $filename exists
-          // validate terminalFiles[$filename] with joi
-          // hit api endpoint to send request
+          if (payload) {
+            if (!terminalFiles[payload]) {
+              CMD_ERROR.literal = `file '${payload}' not found.`;
+              return CMD_ERROR;
+            }
+
+            const { value, error } = Joi.object({
+              name: Joi.string().min(2).required(),
+              email: Joi.string()
+                .email({ tlds: { allow: false } })
+                .required(),
+              message: Joi.string().min(5).max(300).required(),
+            })
+              .unknown(true)
+              .validate(terminalFiles[payload]);
+            if (error) {
+              CMD_ERROR.literal = `cdgsh - error: ${error.details[0].message}`;
+              return CMD_ERROR;
+            }
+
+            // TODO: hit api endpoint to send request
+            // TODO: implement command-line loader
+            CMD_RESPONSE.literal = "posting memo . . .";
+            console.log(value);
+            return CMD_RESPONSE;
+          }
           break;
 
         case "help":
-          if (payload) return CMD_ERROR;
+          if (payload) return DEFAULT_ERROR;
           CMD_RESPONSE.literal = getHelpResponse();
           return CMD_RESPONSE;
 
         case "clear":
-          if (payload) return CMD_ERROR;
+          if (payload) return DEFAULT_ERROR;
           return;
 
         default:
           break;
       }
 
-      return CMD_ERROR;
+      return DEFAULT_ERROR;
     },
     [terminalFiles, commandLiteral, activeFile]
   );
@@ -213,6 +242,7 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
           {sessionTimeIn?.toTimeString().slice(0, 8)} on console
         </p>
         <p>Logged in as guest.</p>
+        <p>Type `help` to begin:</p>
         {terminalLogs.map((log, index) =>
           log.type === "command" ? (
             <CommandLog
@@ -229,7 +259,7 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
         <div>
           <CmdInput
             ref={defaultCmdInput}
-            value={" ".repeat(TERMINAL_PROMPT.length) + commandLiteral}
+            value={`${" ".repeat(TERMINAL_PROMPT.length) + commandLiteral}`}
             onChange={(e) =>
               setCommandLiteral(e.target.value.slice(TERMINAL_PROMPT.length))
             }
