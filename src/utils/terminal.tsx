@@ -1,47 +1,6 @@
-import { Command, Log, TerminalNode } from "../types";
-import { CMD_RULE } from "../constants";
+import { TerminalNode } from "../types";
 
-export const getCommandResponse = (
-  command: Command,
-  payload: string | undefined
-): Log => {
-  const CMD_RESPONSE: Log = { type: "response", literal: "" };
-  const CMD_ERROR: Log = {
-    type: "error",
-    literal: "invalid command syntax :/",
-  };
-
-  if (!CMD_RULE[command].test(`${command} ${payload ?? ""}`)) return CMD_ERROR;
-
-  switch (command) {
-    case "code":
-      // log `created new message file "$filename"`
-      // terminalFiles[$filename] = { ...NEW_TERMINAL_MESSAGE }
-      break;
-    case "decode":
-      // iterate over terminalFiles[$filename] and log out all keys and values
-      break;
-    case "memo config":
-      break;
-    case "graph":
-      // make sure $filename exists
-      // validate terminalFiles[$filename] with joi
-      // hit api endpoint to send request
-      break;
-    case "help":
-      CMD_RESPONSE.literal = getHelpResponse();
-      return CMD_RESPONSE;
-    case "clear":
-      // send instruction to clear logs
-      break;
-    default:
-      break;
-  }
-
-  return CMD_ERROR;
-};
-
-const getHelpResponse = (): TerminalNode[] => {
+export const getHelpResponse = (): TerminalNode[] => {
   return [
     <span>
       - create a new message file: <b>code</b> message.txt

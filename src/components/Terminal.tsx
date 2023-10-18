@@ -6,8 +6,8 @@ import { CommandLog, ResponseLog, ErrorLog } from "./Logs";
 
 // types, constants, utils
 import { Command, ContactMediumProps, Log, TerminalMessage } from "../types";
-import { COMMAND_LIST } from "../constants";
-import { getCommandResponse } from "../utils/terminal";
+import { COMMAND_LIST, NEW_TERMINAL_MESSAGE, CMD_RULE } from "../constants";
+import { getHelpResponse } from "../utils/terminal";
 
 const Outline = styled.div<{ isSelected: boolean }>`
   display: ${({ isSelected }) => (isSelected ? "block" : "none")};
@@ -61,13 +61,62 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
   }>({});
   const defaultCmdInput = useRef<HTMLTextAreaElement>(null);
 
+  const getCommandResponse = useCallback(
+    (command: Command, payload: string | undefined): Log | undefined => {
+      const CMD_RESPONSE: Log = { type: "response", literal: "" };
+      const CMD_ERROR: Log = { type: "error", literal: "" };
+
+      if (!CMD_RULE[command].test(`${command} ${payload ?? ""}`))
+        return CMD_ERROR;
+
+      switch (command) {
+        case "code":
+          const storedFiles = { ...terminalFiles };
+          if (payload) {
+            if (terminalFiles[payload]) {
+              CMD_RESPONSE.literal = `file "${payload}" already exists`;
+            } else {
+              storedFiles[payload] = NEW_TERMINAL_MESSAGE;
+              setTerminalFiles(() => storedFiles);
+              CMD_RESPONSE.literal = `created file: "${payload}"`;
+            }
+            return CMD_RESPONSE;
+          }
+          break;
+
+        case "decode":
+          // iterate over terminalFiles[$filename] and log out all keys and values
+          break;
+        case "memo config":
+          break;
+        case "graph":
+          // make sure $filename exists
+          // validate terminalFiles[$filename] with joi
+          // hit api endpoint to send request
+          break;
+        case "help":
+          CMD_RESPONSE.literal = getHelpResponse();
+          return CMD_RESPONSE;
+        case "clear":
+          // console.log("clear command running");
+          // setTerminalLogs(() => []);
+          return;
+        default:
+          break;
+      }
+
+      return CMD_ERROR;
+    },
+    [terminalFiles]
+  );
+
   const RETURN_keyDown = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === "Enter") {
         const inputtedWords: string[] = command.trim().split(" ");
         const inputtedCommand: Command = inputtedWords[0] as Command;
 
-        const logsCopy = [...terminalLogs];
+        let logsCopy = [...terminalLogs];
         const log: Log = { type: "command", literal: command };
         logsCopy.push(log);
 
@@ -77,26 +126,19 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
             literal: `cdgsh - command not found: ${inputtedCommand}`,
           };
           logsCopy.push(error);
-        }
-        // case 2: valid command
-        else if (COMMAND_LIST.includes(inputtedCommand)) {
-          if (inputtedCommand === "clear" && inputtedWords.length === 1) {
-            setCommand("");
-            return setTerminalLogs(() => []);
-          }
-
+        } else if (COMMAND_LIST.includes(inputtedCommand)) {
           const response = getCommandResponse(
             inputtedCommand,
             command.trim().slice(inputtedCommand.length + 1)
           );
-          logsCopy.push(response);
+          response ? logsCopy.push(response) : (logsCopy = []);
         }
 
         setCommand("");
         setTerminalLogs(() => logsCopy);
       }
     },
-    [command, terminalLogs]
+    [command, terminalLogs, getCommandResponse]
   );
 
   useEffect(() => {
