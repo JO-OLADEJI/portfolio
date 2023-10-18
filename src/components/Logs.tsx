@@ -18,7 +18,7 @@ export const CommandLog = ({
   commandLiteral,
 }: CommandLogProps): JSX.Element => {
   if (typeof commandLiteral === "string") {
-    return <p>{`[${terminalPrompt} ${commandLiteral}`}</p>;
+    return <p>{`${terminalPrompt} ${commandLiteral}`}</p>;
   }
   return (
     <>

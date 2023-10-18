@@ -28,3 +28,10 @@ export interface Log {
   type: LogType;
   literal: string | TerminalNode[];
 }
+
+export interface TerminalMessage {
+  name: string;
+  email: string;
+  message: string;
+  [key: string]: string;
+}

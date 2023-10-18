@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { CommandLog, ResponseLog, ErrorLog } from "./Logs";
 
 // types, constants, utils
-import { Command, ContactMediumProps, Log } from "../types";
+import { Command, ContactMediumProps, Log, TerminalMessage } from "../types";
 import { COMMAND_LIST } from "../constants";
 import { getCommandResponse } from "../utils/terminal";
 
@@ -56,6 +56,9 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
   const [sessionTimeIn, setSessionTimeIn] = useState<Date>();
   const [command, setCommand] = useState<string>("");
   const [terminalLogs, setTerminalLogs] = useState<Log[]>([]);
+  const [terminalFiles, setTerminalFiles] = useState<{
+    [key: string]: TerminalMessage;
+  }>({});
   const defaultCmdInput = useRef<HTMLTextAreaElement>(null);
 
   const RETURN_keyDown = useCallback(
@@ -64,23 +67,18 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
         const inputtedWords: string[] = command.trim().split(" ");
         const inputtedCommand: Command = inputtedWords[0] as Command;
 
-        const log: Log = { type: "command", literal: command };
         const logsCopy = [...terminalLogs];
+        const log: Log = { type: "command", literal: command };
         logsCopy.push(log);
 
-        // case 1: check for empty string
-        if (!inputtedCommand) {
-          // pass
-        }
-        // case 2: check for invalid command
-        else if (!COMMAND_LIST.includes(inputtedCommand)) {
+        if (inputtedCommand && !COMMAND_LIST.includes(inputtedCommand)) {
           const error: Log = {
             type: "error",
             literal: `cdgsh - command not found: ${inputtedCommand}`,
           };
           logsCopy.push(error);
         }
-        // case 3: valid command
+        // case 2: valid command
         else if (COMMAND_LIST.includes(inputtedCommand)) {
           if (inputtedCommand === "clear" && inputtedWords.length === 1) {
             setCommand("");
@@ -92,8 +90,6 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
             command.trim().slice(inputtedCommand.length + 1)
           );
           logsCopy.push(response);
-          // case 1: invalid payload: anything that doesn't conform to that rule is invalid
-          // case 2: valid payload: define rule that checks for the validity of a command
         }
 
         setCommand("");
@@ -104,13 +100,13 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
   );
 
   useEffect(() => {
-    setSessionTimeIn(() => new Date());
-  }, []);
-
-  useEffect(() => {
     document.addEventListener("keydown", RETURN_keyDown);
     return () => document.removeEventListener("keydown", RETURN_keyDown);
   }, [RETURN_keyDown]);
+
+  useEffect(() => {
+    setSessionTimeIn(() => new Date());
+  }, []);
 
   return (
     <Outline isSelected={isActive}>
