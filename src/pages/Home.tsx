@@ -1,83 +1,26 @@
 import React from "react";
-import styled from "styled-components";
 
 // components
 import Nav from "../components/Nav";
-// import Socials from "../components/Socials";
 
 // assets
 import dummyPrint from "../assets/dummy-print.png";
 import barcode from "../assets/barcode.png";
 import fingerprint from "../assets/fingerprint.png";
 
-const Outline = styled.div`
-  > div {
-    margin-top: 3rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 5rem;
-  }
-`;
-
-const FingerPrintPad = styled.div`
-  position: relative;
-  width: 30rem;
-  text-align: center;
-
-  h5 {
-    margin-bottom: 0.5rem;
-  }
-
-  h1 {
-    margin-bottom: 2rem;
-    font-size: 2.5rem;
-  }
-
-  ul {
-    margin-left: 2.8rem;
-  }
-
-  li {
-    text-align: left;
-    list-style-type: none;
-    margin-bottom: 0.7rem;
-    font-size: 1rem;
-  }
-
-  > div {
-    text-align: right;
-  }
-
-  > div p {
-    margin-right: 1rem;
-  }
-`;
-
-const DummyPrint = styled.img`
-  position: absolute;
-  top: 0.5rem;
-  right: 1rem;
-  width: 8rem;
-  z-index: -1;
-`;
-
-const Barcode = styled.img`
-  width: 50%;
-  margin-right: 1rem;
-`;
-
-const FingerPrint = styled.div``;
-
-const FingerPrintImg = styled.img`
-  width: 27rem;
-`;
+// styles
+import {
+  Outline,
+  FingerPrintPad,
+  DummyPrint,
+  Barcode,
+  FingerPrintImg,
+} from "../styles/pages/home";
 
 const Home = (): JSX.Element => {
   return (
     <Outline>
       <Nav page={"home"} />
-
       <div>
         <FingerPrintPad className="old-font">
           <DummyPrint src={dummyPrint} alt="dummy fingerprint" />
@@ -96,15 +39,13 @@ const Home = (): JSX.Element => {
             <pre>73775 03027 269 3</pre>
           </div>
         </FingerPrintPad>
-        <FingerPrint>
+        <div>
           <FingerPrintImg
             src={fingerprint}
             alt="about Joshua Oladeji in thumbprint style"
           />
-        </FingerPrint>
+        </div>
       </div>
-
-      {/* <Socials /> */}
     </Outline>
   );
 };
