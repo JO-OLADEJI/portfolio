@@ -7,6 +7,8 @@ export enum Pages {
   Error404,
 }
 
+export type ContactTab = "meeting" | "terminal" | "form" | "canvas";
+
 export interface ContactMediumProps {
   isActive: boolean;
 }

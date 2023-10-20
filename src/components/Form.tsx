@@ -1,70 +1,20 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import Joi from "joi";
 
 // types
 import { ContactMediumProps } from "../types";
 
-const Outline = styled.div<{ $isSelected: boolean }>`
-  display: ${({ $isSelected: isSelected }) => (isSelected ? "block" : "none")};
-  text-align: center;
-  margin-top: 3rem;
-`;
+// assets
+import copyImg from "../assets/copy.png";
 
-const FormElement = styled.form`
-  margin: 3rem auto;
-  width: fit-content;
-
-  button {
-    cursor: pointer;
-  }
-
-  div {
-    width: 30rem;
-    position: relative;
-    margin: 1rem 0;
-  }
-
-  input,
-  textarea {
-    padding: 0.5rem 1rem;
-    width: 100%;
-  }
-
-  textarea {
-    height: 15rem;
-    resize: none;
-  }
-
-  textarea:focus + #text-count-form {
-    background-color: #6a6a6a;
-  }
-
-  label {
-    background-color: white;
-    padding: 0 0.5rem;
-    position: absolute;
-    top: 0;
-    left: 1.5rem;
-    transform: translate(0, -50%);
-    cursor: pointer;
-  }
-
-  span {
-    font-weight: bold;
-  }
-`;
-
-const TextCount = styled.p`
-  position: absolute;
-  bottom: 1rem;
-  right: 0.8rem;
-  color: #ffffff;
-  background-color: #bbbbbb;
-  border-radius: 1rem;
-  font-size: 0.7rem;
-  padding: 0.5rem;
-`;
+// styles
+import {
+  Outline,
+  FormElement,
+  TextCount,
+  DispatchButton,
+  MailInfo,
+} from "../styles/components/form";
 
 const schema = Joi.object({
   name: Joi.string().min(3).max(50),
@@ -109,11 +59,6 @@ const Form = ({ isActive }: ContactMediumProps): JSX.Element => {
 
   return (
     <Outline $isSelected={isActive}>
-      <div>
-        <h1>Reach Out</h1>
-        <p>primitive :/</p>
-      </div>
-
       <FormElement onSubmit={handleMailSend}>
         <div>
           <label htmlFor="name">Name</label>
@@ -147,15 +92,19 @@ const Form = ({ isActive }: ContactMediumProps): JSX.Element => {
           <TextCount id="text-count-form">{message.length}/300</TextCount>
         </div>
 
-        <button type="submit">Dispatch</button>
+        <DispatchButton type="submit" className="old-font">
+          Dispatch
+        </DispatchButton>
       </FormElement>
 
-      <div>
+      <MailInfo>
         <p>
-          Or send a mail directly to: <span>{contactMail}</span>{" "}
-          <button onClick={handleMailCopy}>copy</button>
+          Or send a mail: <span>{"deji********@gmail.com"}</span>
         </p>
-      </div>
+        <button onClick={handleMailCopy}>
+          <img src={copyImg} alt="copy" />
+        </button>
+      </MailInfo>
     </Outline>
   );
 };

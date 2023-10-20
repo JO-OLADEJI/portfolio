@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import Joi from "joi";
 
 // components
@@ -17,118 +16,17 @@ import {
   getBookedTimestampsFromDB,
 } from "../utils";
 
-const Outline = styled.div<{ $isSelected: boolean }>`
-  display: ${({ $isSelected: isSelected }) => (isSelected ? "block" : "none")};
-  text-align: center;
-  margin-top: 3rem;
-`;
-
-const Form = styled.form`
-  width: fit-content;
-  height: fit-content;
-
-  button {
-    cursor: pointer;
-  }
-
-  div {
-    width: 25rem;
-    position: relative;
-    margin: 1rem 0;
-  }
-
-  div:nth-child(3) {
-    position: relative;
-  }
-
-  input,
-  textarea {
-    padding: 0.5rem 1rem;
-    width: 100%;
-  }
-
-  textarea {
-    height: 20rem;
-    resize: none;
-  }
-
-  label {
-    background-color: white;
-    padding: 0 0.5rem;
-    position: absolute;
-    top: 0;
-    left: 1.5rem;
-    font-size: 0.85rem;
-    transform: translate(0, -50%);
-    cursor: pointer;
-  }
-
-  textarea:focus + #text-count {
-    background-color: #6a6a6a;
-  }
-`;
-
-const TextCount = styled.p`
-  position: absolute;
-  bottom: 1rem;
-  right: 0.8rem;
-  color: #ffffff;
-  background-color: #bbbbbb;
-  border-radius: 1rem;
-  font-size: 0.7rem;
-  padding: 0.5rem;
-`;
-
-const Content = styled.div`
-  margin: 3rem 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 3rem;
-`;
-
-const Calendar = styled.div`
-  width: 50rem;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  position: relative;
-`;
-
-const CalendarBtn = styled.button<{ disabled: boolean }>`
-  position: absolute;
-  top: 50%;
-  background-color: transparent;
-  border: none;
-
-  img {
-    width: 2.5rem;
-    border-radius: 50%;
-    border: 1px solid #858585;
-    padding: 0.3rem;
-    cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
-    opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
-    background-color: #e8e8e8;
-  }
-
-  img:hover {
-    background-color: ${({ disabled }) => (disabled ? "#e8e8e8" : "#bbbbbb")};
-  }
-`;
-
-const LeftBtn = styled(CalendarBtn)`
-  left: 0;
-  transform: translate(-50%, -50%);
-`;
-
-const RightBtn = styled(CalendarBtn)`
-  right: 0;
-  transform: translate(50%, -50%);
-
-  img {
-    rotate: 180deg;
-  }
-`;
+// styles
+import {
+  Outline,
+  Form,
+  TextCount,
+  Content,
+  Calendar,
+  LeftBtn,
+  RightBtn,
+  ScheduleButton,
+} from "../styles/components/meeting";
 
 const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
   const [timezone, setTimezone] = useState<string>("-");
@@ -204,12 +102,10 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
     e.preventDefault();
 
     // TODO: async code here
-    // 1. throw visual error if no time has been selected
     if (!selectedTime) {
       return alert("meeting time NOT selected!");
     }
 
-    // 2. create an object containing the selected time, email, brand & memorandum + validation
     const formInput = { email, brand, memorandum };
     const { value, error } = Joi.object({
       email: Joi.string()
@@ -223,15 +119,10 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
       return alert(error.details[0].message);
     }
     value.meetingTime = selectedTime.toString();
-
-    // 3. send the object (`value`) as a mail to contact@thecodeographer.com
     console.log({ mail: value });
-
-    // 4. Add timestamp to db
     const scheduledTimestamps = addBookedTimestampsToDB(selectedTime);
-    setBookedTimestamps(() => scheduledTimestamps);
 
-    // 5. clear meeting inputs
+    setBookedTimestamps(() => scheduledTimestamps);
     setSelectedTime(null);
     setEmail("");
     setBrand("");
@@ -245,11 +136,6 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
 
   return (
     <Outline $isSelected={isActive}>
-      <div>
-        <h1>Schedule a Meeting</h1>
-        <p>for professionals.</p>
-      </div>
-
       <Content>
         <Calendar>
           <LeftBtn disabled={indexA === 0} onClick={scrollCalenderLeft}>
@@ -310,7 +196,9 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
             <TextCount id="text-count">{memorandum.length}/300</TextCount>
           </div>
 
-          <button type="submit">Schedule</button>
+          <ScheduleButton type="submit" className="old-font">
+            Schedule
+          </ScheduleButton>
         </Form>
       </Content>
     </Outline>

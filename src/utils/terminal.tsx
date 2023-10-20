@@ -2,20 +2,26 @@ import { TerminalNode } from "../types";
 
 export const getHelpResponse = (): TerminalNode[] => {
   return [
-    <span>
-      - create a new message file: <b>code</b> message.txt
+    <span className="plain">
+      <b>-</b> create a new message file: <b>code message.txt</b>
     </span>,
-    <span>
-      - store contact info in created file: <br />
-      <b>&nbsp;&nbsp;memo config</b> guest.name = "uncle bob" <br />
-      <b>&nbsp;&nbsp;memo config</b> guest.email = "unclebob@gmail.com" <br />
-      <b>&nbsp;&nbsp;memo config</b> guest.message = "hello world!"
+    <span className="plain">
+      <b>-</b> store contact info in created file:
+      <br />
+      <b>&nbsp;&nbsp;memo config guest.name = "uncle bob"</b>
+      <br />
+      <b>&nbsp;&nbsp;memo config guest.email = "unclebob@gmail.com"</b>
+      <br />
+      <b>&nbsp;&nbsp;memo config guest.message = "hello world!"</b>
     </span>,
-    <span>
-      - view the content of your message file: <b>decode</b> message.txt
+    <span className="plain">
+      <b>-</b> view the content of your message file: <b>decode message.txt</b>
     </span>,
-    <span>
-      - send message file: <b>graph</b> message.txt
+    <span className="plain">
+      <b>-</b> send message file: <b>graph message.txt</b>
+    </span>,
+    <span className="plain">
+      <b>-</b> clear the terminal screen: <b>clear</b>
     </span>,
   ];
 };

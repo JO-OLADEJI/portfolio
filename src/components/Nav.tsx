@@ -6,7 +6,8 @@ import styled from "styled-components";
 import { Pages } from "../types";
 
 const Outline = styled.nav`
-  padding: 3rem 0;
+  padding: 1.5rem 0;
+  margin-bottom: 1rem;
 
   ul {
     display: flex;

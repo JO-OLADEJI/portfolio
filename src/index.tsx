@@ -12,6 +12,7 @@ import ErrorPage from "./pages/Error";
 // fonts
 import tyewriter from "./fonts/typewriter.ttf";
 import courier from "./fonts/courier.ttf";
+import courierBold from "./fonts/courier-bold.ttf";
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -22,6 +23,13 @@ const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'courier';
     src: url(${courier}) format('truetype');
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: 'courier';
+    src: url(${courierBold}) format('truetype');
+    font-weight: bold;
   }
 
   * {
