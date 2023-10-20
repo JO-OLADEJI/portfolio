@@ -9,7 +9,7 @@ import Meeting from "../components/Meeting";
 // import Socials from "../components/Socials";
 
 // types
-import { Pages, ContactTab } from "../types";
+import { ContactTab } from "../types";
 
 // styles
 import { ContactTabs, TabButton } from "../styles/pages/contact";
@@ -45,7 +45,7 @@ const Contact = (): JSX.Element => {
 
   return (
     <div>
-      <Nav page={Pages.Contact} />
+      <Nav page={"contact"} />
       <ContactTabs>
         {tabs.map((tab, index) => (
           <TabButton

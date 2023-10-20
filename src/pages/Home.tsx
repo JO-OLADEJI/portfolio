@@ -10,9 +10,6 @@ import dummyPrint from "../assets/dummy-print.png";
 import barcode from "../assets/barcode.png";
 import fingerprint from "../assets/fingerprint.png";
 
-// types
-import { Pages } from "../types";
-
 const Outline = styled.div`
   > div {
     margin-top: 3rem;
@@ -79,7 +76,7 @@ const FingerPrintImg = styled.img`
 const Home = (): JSX.Element => {
   return (
     <Outline>
-      <Nav page={Pages.Home} />
+      <Nav page={"home"} />
 
       <div>
         <FingerPrintPad className="old-font">

@@ -1,59 +1,29 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
 
 // types
 import { Pages } from "../types";
 
-const Outline = styled.nav`
-  padding: 1.5rem 0;
-  margin-bottom: 1rem;
-
-  ul {
-    display: flex;
-    justify-content: center;
-    aligh-items: center;
-  }
-
-  li {
-    margin: 0 2rem;
-    list-style-type: none;
-  }
-
-  a {
-    text-decoration: none;
-  }
-`;
-
-const Route = styled.li<{ $iscurrentroute: boolean }>`
-  ${({ $iscurrentroute: iscurrentroute }) =>
-    iscurrentroute
-      ? `
-    text-decoration: line-through;
-    a {
-      cursor: s-resize;
-    }
-  `
-      : null}
-`;
+// styles
+import { Outline, Route } from "../styles/components/nav";
 
 interface NavProps {
   page: Pages;
 }
 
 const Nav = ({ page }: NavProps): JSX.Element => {
+  const links: Pages[] = ["home", "portfolio", "contact"];
+
   return (
     <Outline>
       <ul>
-        <Route $iscurrentroute={page === Pages.Home ? true : false}>
-          <Link to={"/"}>Home</Link>
-        </Route>
-        <Route $iscurrentroute={page === Pages.Portfolio ? true : false}>
-          <Link to={"/portfolio"}>Portfolio</Link>
-        </Route>
-        <Route $iscurrentroute={page === Pages.Contact ? true : false}>
-          <Link to={"/contact"}>Contact</Link>
-        </Route>
+        {links.map((link, index) => (
+          <Route key={index} $iscurrentroute={page === link}>
+            <Link to={`/${link !== "home" ? link : ""}`}>
+              {link.charAt(0).toUpperCase() + link.slice(1)}
+            </Link>
+          </Route>
+        ))}
       </ul>
     </Outline>
   );

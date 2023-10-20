@@ -5,9 +5,6 @@ import styled from "styled-components";
 import Nav from "../components/Nav";
 import Socials from "../components/Socials";
 
-// types
-import { Pages } from "../types";
-
 const Outline = styled.div`
   text-align: center;
 `;
@@ -62,7 +59,7 @@ const ProjectDetails = styled.div`
 const Portfolio = (): JSX.Element => {
   return (
     <Outline>
-      <Nav page={Pages.Portfolio} />
+      <Nav page={"portfolio"} />
 
       <ProjectsContainer>
         <div />

@@ -1,11 +1,6 @@
 import { COMMAND_LIST } from "../constants";
 
-export enum Pages {
-  Home,
-  Portfolio,
-  Contact,
-  Error404,
-}
+export type Pages = "home" | "portfolio" | "contact" | "error";
 
 export type ContactTab = "meeting" | "terminal" | "form" | "canvas";
 
