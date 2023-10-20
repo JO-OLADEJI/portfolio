@@ -10,8 +10,8 @@ import { Command, ContactMediumProps, Log, TerminalMessage } from "../types";
 import { COMMAND_LIST, NEW_TERMINAL_MESSAGE, CMD_RULE } from "../constants";
 import { getHelpResponse } from "../utils/terminal";
 
-const Outline = styled.div<{ isSelected: boolean }>`
-  display: ${({ isSelected }) => (isSelected ? "block" : "none")};
+const Outline = styled.div<{ $isSelected: boolean }>`
+  display: ${({ $isSelected: isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
   margin-top: 3rem;
   font-size: 0.9rem;
@@ -230,7 +230,7 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
   }, []);
 
   return (
-    <Outline isSelected={isActive}>
+    <Outline $isSelected={isActive}>
       <div>
         <h1>Terminal &gt;_</h1>
         <p>for nerds ;D</p>

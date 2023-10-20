@@ -17,8 +17,8 @@ import {
   getBookedTimestampsFromDB,
 } from "../utils";
 
-const Outline = styled.div<{ isSelected: boolean }>`
-  display: ${({ isSelected }) => (isSelected ? "block" : "none")};
+const Outline = styled.div<{ $isSelected: boolean }>`
+  display: ${({ $isSelected: isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
   margin-top: 3rem;
 `;
@@ -244,7 +244,7 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
   };
 
   return (
-    <Outline isSelected={isActive}>
+    <Outline $isSelected={isActive}>
       <div>
         <h1>Schedule a Meeting</h1>
         <p>for professionals.</p>

@@ -17,7 +17,6 @@ const Outline = styled.div``;
 const FingerPrintPad = styled.div`
   margin: auto;
   position: relative;
-  // border: 1px solid red;
   width: 30rem;
   text-align: center;
 

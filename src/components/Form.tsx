@@ -5,8 +5,8 @@ import Joi from "joi";
 // types
 import { ContactMediumProps } from "../types";
 
-const Outline = styled.div<{ isSelected: boolean }>`
-  display: ${({ isSelected }) => (isSelected ? "block" : "none")};
+const Outline = styled.div<{ $isSelected: boolean }>`
+  display: ${({ $isSelected: isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
   margin-top: 3rem;
 `;
@@ -108,7 +108,7 @@ const Form = ({ isActive }: ContactMediumProps): JSX.Element => {
   };
 
   return (
-    <Outline isSelected={isActive}>
+    <Outline $isSelected={isActive}>
       <div>
         <h1>Reach Out</h1>
         <p>primitive :/</p>

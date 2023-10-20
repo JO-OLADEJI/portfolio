@@ -23,18 +23,20 @@ const Column = styled.div`
   }
 `;
 
-const TimeBtn = styled.li<{ disabled: boolean; selected: boolean }>`
+const TimeBtn = styled.li<{ $disabled: boolean; $selected: boolean }>`
   list-style-type: none;
-  border: 1px solid ${({ selected }) => (selected ? "#6a6a6a" : "#e8e8e8")};
+  border: 1px solid
+    ${({ $selected: selected }) => (selected ? "#6a6a6a" : "#e8e8e8")};
   padding: 0.7rem 1.4rem;
   border-radius: 2rem;
   margin-bottom: 1rem;
   cursor: pointer;
   font-size: 1.2rem;
-  background-color: ${({ selected }) => (selected ? "#6a6a6a" : "#ffffff")};
-  color: ${({ selected }) => (selected ? "#ffffff" : "#6a6a6a")};
+  background-color: ${({ $selected: selected }) =>
+    selected ? "#6a6a6a" : "#ffffff"};
+  color: ${({ $selected: selected }) => (selected ? "#ffffff" : "#6a6a6a")};
 
-  ${({ disabled, selected }) =>
+  ${({ $disabled: disabled, $selected: selected }) =>
     disabled
       ? `
     cursor: not-allowed;
@@ -78,8 +80,8 @@ const CalendarDay = ({
         {meetingTimestamps.map((time, index) => (
           <TimeBtn
             key={index}
-            disabled={booked.includes(time.valueOf())}
-            selected={time.valueOf() === selectedTime?.valueOf()}
+            $disabled={booked.includes(time.valueOf())}
+            $selected={time.valueOf() === selectedTime?.valueOf()}
             onClick={() => reserveTime(booked.includes(time.valueOf()), time)}
           >
             {time.getHours()}:

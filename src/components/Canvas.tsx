@@ -4,8 +4,8 @@ import styled from "styled-components";
 // types
 import { ContactMediumProps } from "../types";
 
-const Outline = styled.div<{ isSelected: boolean }>`
-  display: ${({ isSelected }) => (isSelected ? "block" : "none")};
+const Outline = styled.div<{ $isSelected: boolean }>`
+  display: ${({ $isSelected: isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
   margin-top: 3rem;
 `;
@@ -59,11 +59,11 @@ const GreyInk = styled(Ink)`
 
 const LightInk = styled(Ink)`
   background-color: #cacaca;
-`
+`;
 
 const Canvas = ({ isActive }: ContactMediumProps): JSX.Element => {
   return (
-    <Outline isSelected={isActive}>
+    <Outline $isSelected={isActive}>
       <div>
         <h1>Canvas</h1>
         <p>for creatives :)</p>
