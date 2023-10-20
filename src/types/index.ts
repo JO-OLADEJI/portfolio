@@ -2,7 +2,6 @@ import { COMMAND_LIST } from "../constants";
 
 export enum Pages {
   Home,
-  About,
   Portfolio,
   Contact,
   Error404,

@@ -47,9 +47,6 @@ const Nav = ({ page }: NavProps): JSX.Element => {
         <Route $iscurrentroute={page === Pages.Home ? true : false}>
           <Link to={"/"}>Home</Link>
         </Route>
-        <Route $iscurrentroute={page === Pages.About ? true : false}>
-          <Link to={"/about"}>About</Link>
-        </Route>
         <Route $iscurrentroute={page === Pages.Portfolio ? true : false}>
           <Link to={"/portfolio"}>Portfolio</Link>
         </Route>

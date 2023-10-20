@@ -5,7 +5,6 @@ import { createGlobalStyle } from "styled-components";
 
 // pages
 import Home from "./pages/Home";
-import About from "./pages/About";
 import Portfolio from "./pages/Portfolio";
 import Contact from "./pages/Contact";
 import ErrorPage from "./pages/Error";
@@ -46,10 +45,6 @@ const router = createBrowserRouter([
     path: "/",
     element: <Home />,
     errorElement: <ErrorPage />,
-  },
-  {
-    path: "/about",
-    element: <About />,
   },
   {
     path: "/portfolio",
