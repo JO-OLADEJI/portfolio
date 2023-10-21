@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import Joi from "joi";
 
+// config
+import config from "../config.json";
+
 // types
 import { ContactMediumProps } from "../types";
 
@@ -25,7 +28,7 @@ const schema = Joi.object({
 });
 
 const Form = ({ isActive }: ContactMediumProps): JSX.Element => {
-  const [contactMail] = useState<string>("dejijolaoluwa@gmail.com");
+  const contactMail = config.mail;
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [message, setMessage] = useState<string>("");
@@ -99,7 +102,7 @@ const Form = ({ isActive }: ContactMediumProps): JSX.Element => {
 
       <MailInfo>
         <p>
-          Or send a mail: <span>{"deji********@gmail.com"}</span>
+          Or send a mail: <span>{contactMail}</span>
         </p>
         <button onClick={handleMailCopy}>
           <img src={copyImg} alt="copy" />
