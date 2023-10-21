@@ -34,7 +34,7 @@ const Form = ({ isActive }: ContactMediumProps): JSX.Element => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): Promise<void> => {
     e.preventDefault();
-    await navigator.clipboard.writeText(contactMail);
+    await navigator.clipboard?.writeText(contactMail);
     alert(contactMail + " copied to clipboard!");
   };
 

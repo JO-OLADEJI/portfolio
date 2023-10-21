@@ -6,7 +6,7 @@ import Nav from "../components/Nav";
 // assets
 import dummyPrint from "../assets/dummy-print.png";
 import barcode from "../assets/barcode.png";
-import fingerprint from "../assets/fingerprint.png";
+import joshprint from "../assets/joshprint.webm";
 
 // styles
 import {
@@ -14,7 +14,8 @@ import {
   FingerPrintPad,
   DummyPrint,
   Barcode,
-  FingerPrintImg,
+  JoshPrint,
+  PrintScanner,
 } from "../styles/pages/home";
 
 const Home = (): JSX.Element => {
@@ -23,7 +24,10 @@ const Home = (): JSX.Element => {
       <Nav page={"home"} />
       <div>
         <FingerPrintPad className="old-font">
-          <DummyPrint src={dummyPrint} alt="dummy fingerprint" />
+          <PrintScanner />
+          <DummyPrint>
+            <img src={dummyPrint} alt="dummy fingerprint" />
+          </DummyPrint>
           <h5>
             thecodeographer<span>&#174;</span>
           </h5>
@@ -40,10 +44,9 @@ const Home = (): JSX.Element => {
           </div>
         </FingerPrintPad>
         <div>
-          <FingerPrintImg
-            src={fingerprint}
-            alt="about Joshua Oladeji in thumbprint style"
-          />
+          <JoshPrint autoPlay={true} muted={true}>
+            <source src={joshprint} type="video/webm" />
+          </JoshPrint>
         </div>
       </div>
     </Outline>

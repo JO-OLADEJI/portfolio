@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const Outline = styled.div`
   > div {
@@ -44,12 +44,36 @@ export const FingerPrintPad = styled.div`
   }
 `;
 
-export const DummyPrint = styled.img`
+export const DummyPrint = styled.div`
   position: absolute;
   top: 0.5rem;
   right: 1rem;
   width: 8rem;
+  z-index: -2;
+
+  img {
+    width: 100%;
+  }
+`;
+
+const scan = keyframes`
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(11rem);
+  }
+`;
+
+export const PrintScanner = styled.div`
+  position: absolute;
+  right: 1rem;
+  width: 8rem;
+  height: 2rem;
+  background: linear-gradient(0deg, #ffffff50, #ffffff, #ffffff50);
   z-index: -1;
+  animation: ${scan} 1s ease-in-out alternate infinite;
 `;
 
 export const Barcode = styled.img`
@@ -57,6 +81,6 @@ export const Barcode = styled.img`
   margin-right: 1rem;
 `;
 
-export const FingerPrintImg = styled.img`
+export const JoshPrint = styled.video`
   width: 27rem;
 `;
