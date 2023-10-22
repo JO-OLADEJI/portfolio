@@ -10,7 +10,6 @@ export const Interface = styled.div`
   margin: auto;
   width: 40rem;
   height: 25rem;
-  border-radius: 0.5rem;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
   text-align: left;

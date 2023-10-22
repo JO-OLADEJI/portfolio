@@ -2,6 +2,7 @@ import React from "react";
 
 // components
 import Nav from "../components/Nav";
+import RecordPlayer from "../components/RecordPlayer";
 
 // assets
 import dummyPrint from "../assets/dummy-print.png";
@@ -49,6 +50,7 @@ const Home = (): JSX.Element => {
           </JoshPrint>
         </div>
       </div>
+      <RecordPlayer />
     </Outline>
   );
 };

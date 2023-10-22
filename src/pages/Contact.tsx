@@ -6,6 +6,7 @@ import Form from "../components/Form";
 import Terminal from "../components/Terminal";
 import Canvas from "../components/Canvas";
 import Meeting from "../components/Meeting";
+import RecordPlayer from "../components/RecordPlayer";
 
 // types
 import { ContactTab } from "../types";
@@ -62,6 +63,8 @@ const Contact = (): JSX.Element => {
       <Terminal isActive={currentTab === "terminal"} />
       <Canvas isActive={currentTab === "canvas"} />
       <Meeting isActive={currentTab === "meeting"} />
+
+      <RecordPlayer />
     </div>
   );
 };

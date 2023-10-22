@@ -1,7 +1,7 @@
 import styled, { keyframes } from "styled-components";
 
 export const Outline = styled.div`
-  > div {
+  > div:nth-child(2) {
     margin-top: 3rem;
     display: flex;
     justify-content: center;

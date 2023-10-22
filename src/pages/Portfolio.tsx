@@ -3,6 +3,7 @@ import React, { useState, useCallback } from "react";
 // components
 import Nav from "../components/Nav";
 import arrowUp from "../assets/up-arrow.png";
+import RecordPlayer from "../components/RecordPlayer";
 
 // styles
 import {
@@ -20,8 +21,8 @@ const Portfolio = (): JSX.Element => {
 
   const handlePageHover = useCallback(
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
-      const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-      const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+      const xAxis = (window.innerWidth / 2 - e.pageX) / 30;
+      const yAxis = (window.innerHeight / 2 - e.pageY) / 30;
       setRotateX(xAxis);
       setRotateY(yAxis);
     },
@@ -39,13 +40,15 @@ const Portfolio = (): JSX.Element => {
         <ArrowButton onClick={() => setProjectIndex((prev) => prev + 1)}>
           <img src={arrowUp} alt="arrow up" />
         </ArrowButton>
-        <DisplayScreen>
-          <h1>{Math.abs(projectIndex % 4)}</h1>
+        <DisplayScreen className="old-font">
+          <h1>{projectIndex}</h1>
         </DisplayScreen>
         <ArrowDown onClick={() => setProjectIndex((prev) => prev - 1)}>
           <img src={arrowUp} alt="arrow down" />
         </ArrowDown>
       </ContentLayer>
+
+      <RecordPlayer />
     </Outline>
   );
 };
