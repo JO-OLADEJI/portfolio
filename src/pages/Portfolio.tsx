@@ -12,7 +12,7 @@ import projects from "../data/projects.json";
 import {
   Outline,
   Display,
-  ArrowButton,
+  ArrowUp,
   ArrowDown,
   ContentLayer,
 } from "../styles/pages/portfolio";
@@ -40,7 +40,8 @@ const Portfolio = (): JSX.Element => {
           transform: `rotateX(${rotateY}deg) rotateY(${rotateX}deg)`,
         }}
       >
-        <ArrowButton
+        <ArrowUp
+          $disabled={projectIndex === projects.length - 1}
           onClick={() =>
             setProjectIndex((prev) =>
               prev < projects.length - 1 ? prev + 1 : projects.length - 1
@@ -48,11 +49,10 @@ const Portfolio = (): JSX.Element => {
           }
         >
           <img src={arrowUp} alt="arrow up" />
-        </ArrowButton>
+        </ArrowUp>
         <Display>
           <h1 className="old-font">{projects[projectIndex].name}</h1>
           <h3>{projects[projectIndex].descripton}</h3>
-          {/* <p>year: {projects[projectIndex].year}</p> */}
           <ul>
             <p>Tools</p>
             {projects[projectIndex].tools.map((tool, index) => (
@@ -64,6 +64,7 @@ const Portfolio = (): JSX.Element => {
           </a>
         </Display>
         <ArrowDown
+          $disabled={projectIndex === 0}
           onClick={() => setProjectIndex((prev) => (prev > 0 ? prev - 1 : 0))}
         >
           <img src={arrowUp} alt="arrow down" />

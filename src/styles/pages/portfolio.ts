@@ -102,7 +102,7 @@ export const Display = styled.div`
   }
 `;
 
-export const ArrowButton = styled.div`
+export const ArrowUp = styled.div<{ $disabled: boolean }>`
   width: 3.5rem;
   height: 3.5rem;
   margin: auto;
@@ -110,7 +110,8 @@ export const ArrowButton = styled.div`
   padding: 0.5rem;
   transform: translateZ(3rem);
   transform-style: preserve-3d;
-  cursor: pointer;
+  cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
+  opacity: ${({ $disabled }) => ($disabled ? 0.3 : 1)};
   background-color: white;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease-out, background-color 0.3s ease-out;
@@ -132,7 +133,7 @@ export const ArrowButton = styled.div`
   }
 `;
 
-export const ArrowDown = styled(ArrowButton)`
+export const ArrowDown = styled(ArrowUp)`
   transform: rotateZ(180deg) translateZ(3rem);
 
   &:hover {
