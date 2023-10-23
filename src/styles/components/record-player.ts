@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 
 export const Outline = styled.div`
   position: fixed;
@@ -8,17 +8,35 @@ export const Outline = styled.div`
   border-radius: 1rem;
   padding-left: 1rem;
   padding-top: 1rem;
-  padding-bottom: .5rem;
-  padding-right: 2rem;
-  transition: border .5s ease-out;
+  padding-bottom: 0.5rem;
+  padding-right: 1rem;
+  transition: border 0.5s ease-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:hover {
     border: 2px solid black;
   }
 
-  div {
-    // border: 1px solid red;
-    // width: fit-content;
+  div:last-child {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: #cccccc;
+    transition: background-color 0.3s ease-out;
+
+    &:hover {
+      background-color: #999999;
+    }
+
+    &:hover img {
+      opacity: 1;
+    }
   }
 `;
 
@@ -32,14 +50,29 @@ const rotate = keyframes`
   }
 `;
 
-export const Disc = styled.img`
+export const Disc = styled.img<{ $isPlaying: boolean }>`
   width: 6rem;
-  animation: ${rotate} 4s linear infinite;
+  ${({ $isPlaying }) =>
+    $isPlaying
+      ? css`
+          animation: ${rotate} 4s linear infinite;
+        `
+      : null}
 `;
 
-export const Tonearm = styled.img`
+export const Tonearm = styled.img<{ $isPlaying: boolean }>`
   width: 4rem;
   position: relative;
   left: -2rem;
   bottom: 1.5rem;
+  transform-origin: top right;
+  transition: transform 0.5s linear;
+  transform: ${({ $isPlaying }) =>
+    $isPlaying ? "rotate(0deg)" : "rotate(-20deg)"};
+`;
+
+export const PlayPauseBtn = styled.img`
+  width: 50%;
+  opacity: 0.5;
+  transition: opacity 0.3s ease-out;
 `;

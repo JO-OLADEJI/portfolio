@@ -49,7 +49,6 @@ export const Display = styled.div`
     transform: translateZ(1rem);
     transform-style: preserve-3d;
 
-
     p {
       font-size: 0.8rem;
       margin-bottom: 0.3rem;
@@ -81,13 +80,24 @@ export const Display = styled.div`
     border: none;
     font-size: 1rem;
     color: #ffffff;
-    background-color: black;
+    background-color: #6a6a6a;
     border-radius: 3rem;
     transform: translateZ(10rem);
     transform-style: preserve-3d;
+    transition: transform 0.3s ease-out, background-color 0.3s ease-out;
+
+    &:hover {
+      transform: translateZ(8rem);
+      background-color: black;
+    }
+
+    &:hover p {
+      transform: translateZ(0);
+    }
 
     p {
       transform: translateZ(3rem);
+      transition: transform 0.3s ease-out;
     }
   }
 `;
@@ -107,7 +117,7 @@ export const ArrowButton = styled.div`
 
   &:hover {
     background-color: #00000050;
-    transform: translateZ(4rem);
+    transform: translateZ(1.5rem);
   }
 
   &:hover img {
@@ -127,6 +137,6 @@ export const ArrowDown = styled(ArrowButton)`
 
   &:hover {
     background-color: #00000050;
-    transform: rotateZ(180deg) translateZ(4rem);
+    transform: rotateZ(180deg) translateZ(1.5rem);
   }
 `;
