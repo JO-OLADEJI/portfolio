@@ -5,10 +5,13 @@ import Nav from "../components/Nav";
 import arrowUp from "../assets/up-arrow.png";
 import RecordPlayer from "../components/RecordPlayer";
 
+// data
+import projects from "../data/projects.json";
+
 // styles
 import {
   Outline,
-  DisplayScreen,
+  Display,
   ArrowButton,
   ArrowDown,
   ContentLayer,
@@ -37,13 +40,32 @@ const Portfolio = (): JSX.Element => {
           transform: `rotateX(${rotateY}deg) rotateY(${rotateX}deg)`,
         }}
       >
-        <ArrowButton onClick={() => setProjectIndex((prev) => prev + 1)}>
+        <ArrowButton
+          onClick={() =>
+            setProjectIndex((prev) =>
+              prev < projects.length - 1 ? prev + 1 : projects.length - 1
+            )
+          }
+        >
           <img src={arrowUp} alt="arrow up" />
         </ArrowButton>
-        <DisplayScreen className="old-font">
-          <h1>{projectIndex}</h1>
-        </DisplayScreen>
-        <ArrowDown onClick={() => setProjectIndex((prev) => prev - 1)}>
+        <Display>
+          <h1 className="old-font">{projects[projectIndex].name}</h1>
+          <h3>{projects[projectIndex].descripton}</h3>
+          {/* <p>year: {projects[projectIndex].year}</p> */}
+          <ul>
+            <p>Tools</p>
+            {projects[projectIndex].tools.map((tool, index) => (
+              <span key={index}>{tool}</span>
+            ))}
+          </ul>
+          <a href={projects[projectIndex].url} target="_blank" rel="noreferrer">
+            <p className="old-font">Step Inside</p>
+          </a>
+        </Display>
+        <ArrowDown
+          onClick={() => setProjectIndex((prev) => (prev > 0 ? prev - 1 : 0))}
+        >
           <img src={arrowUp} alt="arrow down" />
         </ArrowDown>
       </ContentLayer>

@@ -1,0 +1,51 @@
+[
+  {
+    "name": "Cartlog",
+    "descripton": " A transport management system for booking and keeping records of a company's road travel information.",
+    "tools": ["React.ts", "Node.ts", "Illustrator"],
+    "year": 2023,
+    "url": "http://"
+  },
+  {
+    "name": "EveryRead",
+    "descripton": "Using spaced repetition to help you remember your notes effortlessly. Say goodbye to forgetfulness and hello to effective learning.",
+    "tools": ["React.ts", "Node.ts", "MongoDB"],
+    "year": 2023,
+    "url": "http://"
+  },
+  {
+    "name": "Honeycomb",
+    "descripton": "Pool for users to stake an ERC-20 token and receive a share of the total reward pool after certain epochs",
+    "tools": ["Solidity", "React.ts"],
+    "year": 2022,
+    "url": "http://"
+  },
+  {
+    "name": "Mograph Reel",
+    "descripton": "A visual journey that combines creativity and technical prowess. From stunning animations to eye-catching designs, explore a world of motion in every frame.",
+    "tools": ["After Effects", "Premiere Pro"],
+    "year": 2023,
+    "url": "http://"
+  },
+  {
+    "name": "Day in my Life",
+    "descripton": "Documenting a day in my life as a codeographer! From sunrise to sunset, witness the hunger, the process, and the twist and turns in my routine.",
+    "tools": ["Premiere Pro", "After Effects"],
+    "year": 2023,
+    "url": "http://"
+  },
+  {
+    "name": "thecodeographer",
+    "descripton": "Minimalist portfolio website providing a window into my personality, creativity and skillsets.",
+    "tools": ["React.ts", "Illustrator", "After Effects"],
+    "year": 2023,
+    "url": "http://"
+  },
+  {
+    "name": "Walkman",
+    "descripton": "Final class project for Introduction to Programming I course at University of London.",
+    "tools": ["HTML", "CSS", "JavaScript"],
+    "year": 2023,
+    "url": "http://"
+  }
+]

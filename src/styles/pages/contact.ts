@@ -9,17 +9,19 @@ export const ContactTabs = styled.div`
   gap: 0.15rem;
 `;
 
-export const TabButton = styled.button<{ selected: boolean }>`
+export const TabButton = styled.button<{ $selected: boolean }>`
   width: 12rem;
   cursor: pointer;
   padding: 0.5rem 0.8rem;
-  border: 1px solid ${({ selected }) => (selected ? "black" : "#e8e8e8")};
+  border: 1px solid
+    ${({ $selected: selected }) => (selected ? "black" : "#e8e8e8")};
   font-size: 1rem;
-  color: ${({ selected }) => (selected ? "#ffffff" : "#444444")};
-  background-color: ${({ selected }) => (selected ? "black" : "#f9f9f8")};
+  color: ${({ $selected: selected }) => (selected ? "#ffffff" : "#444444")};
+  background-color: ${({ $selected: selected }) =>
+    selected ? "black" : "#f9f9f8"};
 
   &:hover {
-    ${({ selected }) =>
+    ${({ $selected: selected }) =>
       !selected
         ? `
     background-color: #868686;

@@ -50,7 +50,7 @@ const Contact = (): JSX.Element => {
         {tabs.map((tab, index) => (
           <TabButton
             key={index}
-            selected={currentTab === tab.name}
+            $selected={currentTab === tab.name}
             onClick={(e) => handleTabClick(e, tab.name)}
           >
             <p className="old-font">{tab.name}</p>
