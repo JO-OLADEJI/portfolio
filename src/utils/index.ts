@@ -37,3 +37,8 @@ export const addBookedTimestampsToDB = (newBookedTime: Date): number[] => {
   localStorage.setItem(DB_KEY, JSON.stringify(scheduledTimestamps));
   return scheduledTimestamps;
 };
+
+export const getDistanceToTopOfViewport = (element: HTMLElement): number => {
+  const elementRect: DOMRect = element.getBoundingClientRect();
+  return elementRect.top;
+};

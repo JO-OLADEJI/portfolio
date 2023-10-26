@@ -1,10 +1,11 @@
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import { isMobile } from "react-device-detect";
 
 export const ContentWrapper = styled.div<{ $isMenuOpen: boolean }>`
   margin-top: ${isMobile ? "3rem" : "1rem"};
   margin-bottom: ${isMobile ? "5rem" : "0"};
   display: flex;
+  flex-direction: ${isMobile ? "column" : "row"};
   justify-content: center;
   align-items: center;
   gap: 5rem;
@@ -12,10 +13,6 @@ export const ContentWrapper = styled.div<{ $isMenuOpen: boolean }>`
   transition: filter 0.5s ease-out;
   filter: ${({ $isMenuOpen }) =>
     isMobile && $isMenuOpen ? "blur(10px)" : "blur(0px)"};
-
-  > div:nth-child(2) {
-    width: ${isMobile ? "85%" : "27rem"};
-  }
 `;
 
 export const FingerPrintPad = styled.div`
@@ -60,7 +57,6 @@ export const DummyPrint = styled.div`
   transform: translateX(${isMobile ? "50%" : "0"});
   width: 8rem;
   z-index: -2;
-  // border: 1px solid black;
 
   img {
     width: 100%;
@@ -83,8 +79,8 @@ export const PrintScanner = styled.div`
   height: 2rem;
   background: linear-gradient(0deg, #ffffff50, #ffffff, #ffffff50);
   z-index: 1;
-  // border: 1px solid red;
-  animation: ${scan} 1s ease-in-out alternate infinite;
+  animation: ${scan} 1s linear alternate;
+  animation-iteration-count: ${isMobile ? "6" : "infinite"};
 `;
 
 export const Barcode = styled.img`
@@ -93,5 +89,34 @@ export const Barcode = styled.img`
 `;
 
 export const JoshPrint = styled.video`
-  width: 100%;
+  width: ${isMobile ? "85%" : "27rem"};
+  ${isMobile
+    ? css`
+        display: block;
+        margin: auto;
+      `
+    : null}
+`;
+
+const hover = keyframes`
+  0% {
+    transform: translateY(-1.5rem);
+  }
+
+  100% {
+    transform: translateY(1.5rem);
+  }
+`;
+
+export const ScrollIndicator = styled.div<{ $show: boolean }>`
+  width: 85%;
+
+  img {
+    display: block;
+    margin: auto;
+    filter: grayscale(100%) contrast(70%);
+    opacity: ${({ $show }) => ($show ? "1" : "0")};
+    transition: opacity 1s ease-in-out;
+    animation: ${hover} 1s ease-in-out alternate infinite;
+  }
 `;
