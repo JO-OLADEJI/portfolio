@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { isMobile } from "react-device-detect";
 
 export const Outline = styled.div`
   height: 100vh;
@@ -6,9 +7,12 @@ export const Outline = styled.div`
   overflow: hidden;
 `;
 
-export const ContentLayer = styled.div`
+export const ContentLayer = styled.div<{ $isMenuOpen: boolean }>`
   padding-top: 3rem;
-  transform-style: preserve-3d;
+  transform-style: ${isMobile ? "flat" : "preserve-3d"};
+  transition: filter 0.5s ease-out;
+  filter: ${({ $isMenuOpen }) =>
+    isMobile && $isMenuOpen ? "blur(10px)" : "none"};
 `;
 
 export const Display = styled.div`

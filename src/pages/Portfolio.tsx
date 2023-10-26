@@ -1,4 +1,8 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useContext } from "react";
+import { isMobile } from "react-device-detect";
+
+// context
+import { GlobalContext } from "../contexts/Global";
 
 // components
 import Nav from "../components/Nav";
@@ -18,6 +22,7 @@ import {
 } from "../styles/pages/portfolio";
 
 const Portfolio = (): JSX.Element => {
+  const globalContext = useContext(GlobalContext);
   const [rotateX, setRotateX] = useState<number>(0);
   const [rotateY, setRotateY] = useState<number>(0);
   const [projectIndex, setProjectIndex] = useState<number>(0);
@@ -36,6 +41,7 @@ const Portfolio = (): JSX.Element => {
     <Outline onMouseMove={handlePageHover}>
       <Nav page={"portfolio"} />
       <ContentLayer
+        $isMenuOpen={globalContext.isMenuOpen}
         style={{
           transform: `rotateX(${rotateY}deg) rotateY(${rotateX}deg)`,
         }}
@@ -71,7 +77,7 @@ const Portfolio = (): JSX.Element => {
         </ArrowDown>
       </ContentLayer>
 
-      <RecordPlayer />
+      {!isMobile && <RecordPlayer />}
     </Outline>
   );
 };

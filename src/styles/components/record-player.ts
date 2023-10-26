@@ -1,9 +1,10 @@
 import styled, { keyframes, css } from "styled-components";
+import { isMobile } from "react-device-detect";
 
 export const Outline = styled.div`
   position: fixed;
-  left: 3rem;
-  bottom: 1.5rem;
+  left: ${isMobile ? "2rem" : "3rem"};
+  bottom: ${isMobile ? "6rem" : "1.5rem"};
   border: 2px solid #00000010;
   border-radius: 1rem;
   padding-left: 1rem;

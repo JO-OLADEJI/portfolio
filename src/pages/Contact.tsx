@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { isMobile } from "react-device-detect";
+
+// context
+import { GlobalContext } from "../contexts/Global";
 
 // components
 import Nav from "../components/Nav";
@@ -12,9 +16,14 @@ import RecordPlayer from "../components/RecordPlayer";
 import { ContactTab } from "../types";
 
 // styles
-import { ContactTabs, TabButton } from "../styles/pages/contact";
+import {
+  ContactTabs,
+  TabButton,
+  ContentWrapper,
+} from "../styles/pages/contact";
 
 const Contact = (): JSX.Element => {
+  const globalContext = useContext(GlobalContext);
   const [currentTab, setCurrentTab] = useState<ContactTab>("meeting");
   const tabs: { name: ContactTab; user: string }[] = [
     {
@@ -46,25 +55,27 @@ const Contact = (): JSX.Element => {
   return (
     <div>
       <Nav page={"contact"} />
-      <ContactTabs>
-        {tabs.map((tab, index) => (
-          <TabButton
-            key={index}
-            $selected={currentTab === tab.name}
-            onClick={(e) => handleTabClick(e, tab.name)}
-          >
-            <p className="old-font">{tab.name}</p>
-            <p>{tab.user}</p>
-          </TabButton>
-        ))}
-      </ContactTabs>
+      <ContentWrapper $isMenuOpen={globalContext.isMenuOpen}>
+        <ContactTabs>
+          {tabs.map((tab, index) => (
+            <TabButton
+              key={index}
+              $selected={currentTab === tab.name}
+              onClick={(e) => handleTabClick(e, tab.name)}
+            >
+              <p className="old-font">{tab.name}</p>
+              <p>{tab.user}</p>
+            </TabButton>
+          ))}
+        </ContactTabs>
 
-      <Form isActive={currentTab === "form"} />
-      <Terminal isActive={currentTab === "terminal"} />
-      <Canvas isActive={currentTab === "canvas"} />
-      <Meeting isActive={currentTab === "meeting"} />
+        <Form isActive={currentTab === "form"} />
+        <Terminal isActive={currentTab === "terminal"} />
+        <Canvas isActive={currentTab === "canvas"} />
+        <Meeting isActive={currentTab === "meeting"} />
 
-      <RecordPlayer />
+        {!isMobile && <RecordPlayer />}
+      </ContentWrapper>
     </div>
   );
 };

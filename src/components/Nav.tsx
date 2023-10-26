@@ -1,30 +1,58 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { isMobile } from "react-device-detect";
+
+// context
+import { GlobalContext } from "../contexts/Global";
+
+// components
+import RecordPlayer from "./RecordPlayer";
 
 // types
 import { Pages } from "../types";
 
 // styles
-import { Outline, Route } from "../styles/components/nav";
+import {
+  Outline,
+  Route,
+  BurgerMenu,
+  RouteOutline,
+} from "../styles/components/nav";
 
 interface NavProps {
   page: Pages;
 }
 
 const Nav = ({ page }: NavProps): JSX.Element => {
+  const globalContext = useContext(GlobalContext);
   const links: Pages[] = ["home", "portfolio", "contact"];
 
   return (
     <Outline>
-      <ul>
+      <RouteOutline $isMenuOpen={globalContext.isMenuOpen}>
         {links.map((link, index) => (
-          <Route key={index} $iscurrentroute={page === link}>
+          <Route
+            key={index}
+            $iscurrentroute={page === link}
+            onClick={() => globalContext.setIsMenuOpen(false)}
+          >
             <Link to={`/${link !== "home" ? link : ""}`}>
               {link.charAt(0).toUpperCase() + link.slice(1)}
             </Link>
           </Route>
         ))}
-      </ul>
+        {isMobile && <RecordPlayer />}
+      </RouteOutline>
+      {isMobile && (
+        <BurgerMenu
+          $isMenuOpen={globalContext.isMenuOpen}
+          onClick={() => globalContext.setIsMenuOpen((prev) => !prev)}
+        >
+          <span />
+          <span />
+          <span />
+        </BurgerMenu>
+      )}
     </Outline>
   );
 };

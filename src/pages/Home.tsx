@@ -1,4 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
+import { isMobile } from "react-device-detect";
+
+// context
+import { GlobalContext } from "../contexts/Global";
 
 // components
 import Nav from "../components/Nav";
@@ -11,7 +15,7 @@ import joshprint from "../assets/joshprint.webm";
 
 // styles
 import {
-  Outline,
+  ContentWrapper,
   FingerPrintPad,
   DummyPrint,
   Barcode,
@@ -20,13 +24,15 @@ import {
 } from "../styles/pages/home";
 
 const Home = (): JSX.Element => {
+  const globalContext = useContext(GlobalContext);
+
   return (
-    <Outline>
+    <div>
       <Nav page={"home"} />
-      <div>
+      <ContentWrapper $isMenuOpen={globalContext.isMenuOpen}>
         <FingerPrintPad className="old-font">
-          <PrintScanner />
           <DummyPrint>
+            <PrintScanner />
             <img src={dummyPrint} alt="dummy fingerprint" />
           </DummyPrint>
           <h5>
@@ -49,9 +55,10 @@ const Home = (): JSX.Element => {
             <source src={joshprint} type="video/webm" />
           </JoshPrint>
         </div>
-      </div>
-      <RecordPlayer />
-    </Outline>
+      </ContentWrapper>
+
+      {!isMobile && <RecordPlayer />}
+    </div>
   );
 };
 

@@ -3,6 +3,9 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 
+// contexts
+import { GlobalContextProvider } from "./contexts/Global";
+
 // pages
 import Home from "./pages/Home";
 import Portfolio from "./pages/Portfolio";
@@ -67,6 +70,8 @@ const router = createBrowserRouter([
 root.render(
   <React.StrictMode>
     <GlobalStyle />
-    <RouterProvider router={router} />
+    <GlobalContextProvider>
+      <RouterProvider router={router} />
+    </GlobalContextProvider>
   </React.StrictMode>
 );
