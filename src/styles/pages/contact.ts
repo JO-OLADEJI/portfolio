@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { isMobile } from "react-device-detect";
 
 export const ContentWrapper = styled.div<{ $isMenuOpen: boolean }>`
@@ -13,13 +13,16 @@ export const ContactTabs = styled.div`
   width: fit-content;
   margin: auto;
   display: flex;
+  flex-direction: ${isMobile ? "column" : "row"};
   justify-content: center;
   align-items: center;
   gap: 0.15rem;
+  position: relative;
 `;
 
 export const TabButton = styled.button<{ $selected: boolean }>`
-  width: 12rem;
+  display: ${({ $selected }) => (isMobile && !$selected ? "none" : "block")};
+  width: ${isMobile ? "15rem" : "12rem"};
   cursor: pointer;
   padding: 0.5rem 0.8rem;
   border: 1px solid
@@ -39,18 +42,36 @@ export const TabButton = styled.button<{ $selected: boolean }>`
         : null}
   }
 
-  &:nth-child(1) {
-    border-top-left-radius: 2rem;
-    border-bottom-left-radius: 2rem;
-  }
-
-  &:last-child {
-    border-top-right-radius: 2rem;
-    border-bottom-right-radius: 2rem;
-  }
-
   p:last-child {
     font-size: 0.6rem;
     font-weight: bold;
   }
+
+  ${isMobile
+    ? css`
+        border-radius: 2rem;
+      `
+    : css`
+        &:nth-child(1) {
+          border-top-left-radius: 2rem;
+          border-bottom-left-radius: 2rem;
+        }
+
+        &:last-child {
+          border-top-right-radius: 2rem;
+          border-bottom-right-radius: 2rem;
+        }
+      `};
+`;
+
+export const DropdownBtn = styled.img`
+  width: 2.1rem;
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translate(0, -50%) rotateZ(-90deg);
+  background-color: #999999;
+  border-radius: 50%;
+  padding: 0.4rem;
+  filter: invert(0.8);
 `;

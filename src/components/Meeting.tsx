@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Joi from "joi";
+import { isMobile } from "react-device-detect";
 
 // components
 import CalendarDay from "./CalendarDay";
@@ -37,7 +38,7 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
   const [brand, setBrand] = useState<string>("");
   const [memorandum, setMemorandum] = useState<string>("");
   const [indexA, setIndexA] = useState<number>(0);
-  const [indexB, setIndexB] = useState<number>(5);
+  const [indexB, setIndexB] = useState<number>(isMobile ? 3 : 5);
 
   useEffect(() => {
     const leeway: MeetingDay[] = [];

@@ -12,6 +12,9 @@ import Canvas from "../components/Canvas";
 import Meeting from "../components/Meeting";
 import RecordPlayer from "../components/RecordPlayer";
 
+// assets
+import leftChevron from "../assets/left-chevron.png";
+
 // types
 import { ContactTab } from "../types";
 
@@ -20,11 +23,13 @@ import {
   ContactTabs,
   TabButton,
   ContentWrapper,
+  DropdownBtn,
 } from "../styles/pages/contact";
 
 const Contact = (): JSX.Element => {
   const globalContext = useContext(GlobalContext);
   const [currentTab, setCurrentTab] = useState<ContactTab>("meeting");
+  const [tabDisplayIndex, setTabDisplayIndex] = useState<number>(0);
   const tabs: { name: ContactTab; user: string }[] = [
     {
       name: "meeting",
@@ -46,10 +51,21 @@ const Contact = (): JSX.Element => {
 
   const handleTabClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    tab: ContactTab
+    tab: ContactTab,
+    tabIndex: number
   ): void => {
     e.preventDefault();
-    setCurrentTab(tab);
+    if (!isMobile) {
+      setCurrentTab(tab);
+      setTabDisplayIndex(tabIndex);
+    }
+  };
+
+  const handleTabTraverse = (): void => {
+    if (isMobile) {
+      setTabDisplayIndex(() => (tabDisplayIndex + 1) % tabs.length);
+      setCurrentTab(tabs[tabDisplayIndex].name);
+    }
   };
 
   return (
@@ -61,12 +77,19 @@ const Contact = (): JSX.Element => {
             <TabButton
               key={index}
               $selected={currentTab === tab.name}
-              onClick={(e) => handleTabClick(e, tab.name)}
+              onClick={(e) => handleTabClick(e, tab.name, index)}
             >
               <p className="old-font">{tab.name}</p>
               <p>{tab.user}</p>
             </TabButton>
           ))}
+          {isMobile && (
+            <DropdownBtn
+              src={leftChevron}
+              alt="dropdown"
+              onClick={handleTabTraverse}
+            />
+          )}
         </ContactTabs>
 
         <Form isActive={currentTab === "form"} />

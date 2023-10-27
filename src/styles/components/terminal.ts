@@ -1,15 +1,16 @@
 import styled from "styled-components";
+import { isMobile } from "react-device-detect";
 
 export const Outline = styled.div<{ $isSelected: boolean }>`
   display: ${({ $isSelected: isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
-  margin: 3rem 0;
+  margin: ${isMobile ? "1.5rem 0" : "3rem 0"};
 `;
 
 export const Interface = styled.div`
   margin: auto;
-  width: 40rem;
-  height: 25rem;
+  width: ${isMobile ? "90vw" : "40rem"};
+  height: ${isMobile ? "70vh" : "25rem"};
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
   text-align: left;

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Joi from "joi";
+import { isMobile } from "react-device-detect";
 
 // config
 import config from "../config.json";
@@ -102,7 +103,7 @@ const Form = ({ isActive }: ContactMediumProps): JSX.Element => {
 
       <MailInfo>
         <p>
-          Or send a mail: <span>{contactMail}</span>
+          Or send a mail:{isMobile && <br />} <span>{contactMail}</span>
         </p>
         <button onClick={handleMailCopy}>
           <img src={copyImg} alt="copy" />

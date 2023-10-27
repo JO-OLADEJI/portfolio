@@ -1,27 +1,30 @@
 import styled from "styled-components";
+import { isMobile } from "react-device-detect";
 
 export const Outline = styled.div<{ $isSelected: boolean }>`
   display: ${({ $isSelected: isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
-  margin-top: 3rem;
+  margin: ${isMobile ? "1.5rem 0" : "3rem 0"};
 `;
 
 export const BoardOutline = styled.div`
   margin: 3rem auto;
-  width: 60rem;
-  height: 30rem;
+  width: ${isMobile ? "90vw" : "60rem"};
+  height: ${isMobile ? "70vh" : "30rem"};
   background-color: black;
   position: relative;
+  border-radius: ${isMobile ? "0.5rem" : "1.1rem"};
 `;
 
 export const Board = styled.div`
-  width: 98%;
-  height: 96%;
+  width: ${isMobile ? "96%" : "98%"};
+  height: ${isMobile ? "97%" : "96%"};
   background-color: white;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  border-radius: ${isMobile ? "0.3rem" : "0.7rem"};
 `;
 
 export const Controls = styled.div`
@@ -43,7 +46,8 @@ export const Controls = styled.div`
   }
 
   img {
-    width: 2.5rem;
+    width: ${isMobile ? "1.2rem" : "1.6rem"};
+    opacity: 0.6;
   }
 `;
 

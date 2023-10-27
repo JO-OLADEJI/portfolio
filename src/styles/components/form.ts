@@ -1,9 +1,10 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import { isMobile } from "react-device-detect";
 
 export const Outline = styled.div<{ $isSelected: boolean }>`
   display: ${({ $isSelected: isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
-  margin-top: 3rem;
+  margin: ${isMobile ? "1.5rem 0" : "3rem 0"};
 
   span {
     font-weight: bold;
@@ -20,7 +21,7 @@ export const FormElement = styled.form`
   }
 
   div {
-    width: 25rem;
+    width: ${isMobile ? "90vw" : "25rem"};
     position: relative;
     margin: 1rem 0;
   }
@@ -29,6 +30,7 @@ export const FormElement = styled.form`
   textarea {
     padding: 0.5rem 1rem;
     width: 100%;
+    font-size: 1rem;
   }
 
   textarea {
@@ -77,7 +79,7 @@ export const DispatchButton = styled.button`
 
 export const MailInfo = styled.div`
   font-size: 0.8rem;
-  margin-top: 1rem;
+  margin-top: ${isMobile ? "2rem" : "1rem"};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -85,8 +87,13 @@ export const MailInfo = styled.div`
   button {
     background-color: transparent;
     border: none;
-    margin-left: 1rem;
+    margin-left: ${isMobile ? "0.5rem" : "1rem"};
     cursor: pointer;
+
+    ${isMobile &&
+    css`
+      margin-top: 1rem;
+    `}
   }
 
   img {

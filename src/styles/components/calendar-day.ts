@@ -1,13 +1,14 @@
 import styled from "styled-components";
+import { isMobile } from "react-device-detect";
 
 export const Column = styled.div`
-  padding: 1.5rem;
-  border-radius: 1.5rem;
+  padding: ${isMobile ? "1rem" : "1.5rem"};
+  border-radius: ${isMobile ? "1rem" : "1.5rem"};
   background-color: #f9f9f8;
   width: fit-content;
 
   p {
-    margin-bottom: 0.5rem;
+    margin-bottom: ${isMobile ? "0" : "0.5rem"};
     font-size: 1rem;
     font-weight: bold;
     color: #00000070;
@@ -15,7 +16,7 @@ export const Column = styled.div`
 
   h1 {
     font-size: 3rem;
-    margin-bottom: 2rem;
+    margin-bottom: ${isMobile ? "1rem" : "2rem"};
   }
 
   span {

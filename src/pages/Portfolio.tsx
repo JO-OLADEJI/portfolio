@@ -26,7 +26,7 @@ import {
 
 const Portfolio = (): JSX.Element => {
   const globalContext = useContext(GlobalContext);
-  const { requestAccess, error } = useDeviceOrientation();
+  const { requestAccess, error, orientation } = useDeviceOrientation();
   const [rotateX, setRotateX] = useState<number>(0);
   const [rotateY, setRotateY] = useState<number>(0);
   const [projectIndex, setProjectIndex] = useState<number>(0);
@@ -42,18 +42,20 @@ const Portfolio = (): JSX.Element => {
     []
   );
 
-  const handleDeviceOrientation = useCallback((e: DeviceOrientationEvent) => {
+  const handleDeviceOrientation = useCallback(() => {
     if (!isMobile) return;
-    const xRotation = ((e.beta ?? 90) - 90) / 4.5;
-    const yRotation = -1 * ((e.gamma ?? 0) / 3);
+    // TODO: swith flat page render to a user's natural screen position
+    const xRotation = ((orientation?.beta ?? 90) - 90) / 4.5;
+    const yRotation = -1 * ((orientation?.gamma ?? 0) / 3);
     setRotateX(yRotation);
     setRotateY(xRotation);
-  }, []);
+  }, [orientation?.beta, orientation?.gamma]);
 
   useEffect(() => {
     const helpMe = async () => {
       const access = await requestAccess();
       setOrientationAccess(access);
+      // TODO: remove in prod.
       console.log({ access });
     };
     helpMe();

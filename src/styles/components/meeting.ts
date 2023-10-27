@@ -1,9 +1,10 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import { isMobile } from "react-device-detect";
 
 export const Outline = styled.div<{ $isSelected: boolean }>`
   display: ${({ $isSelected: isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
-  margin: 3rem 0;
+  margin: ${isMobile ? "1.5rem 0" : "3rem 0"};
 `;
 
 export const Form = styled.form`
@@ -11,7 +12,7 @@ export const Form = styled.form`
   height: fit-content;
 
   div {
-    width: 20rem;
+    width: ${isMobile ? "90vw" : "20rem"};
     position: relative;
     margin: 1rem 0;
   }
@@ -24,6 +25,7 @@ export const Form = styled.form`
   textarea {
     padding: 0.5rem 1rem;
     width: 100%;
+    font-size: 1rem;
   }
 
   textarea {
@@ -37,7 +39,7 @@ export const Form = styled.form`
     position: absolute;
     top: 0;
     left: 1.5rem;
-    font-size: 0.7rem;
+    font-size: ${isMobile ? "0.8rem" : "0.7rem"};
     font-weight: bold;
     transform: translate(0, -50%);
     cursor: pointer;
@@ -75,11 +77,17 @@ export const Content = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 3rem;
+  flex-wrap: wrap;
+  gap: ${isMobile ? "1.5rem" : "3rem"};
+
+  ${isMobile &&
+  css`
+    margin-bottom: 7rem;
+  `}
 `;
 
 export const Calendar = styled.div`
-  width: 41rem;
+  width: ${isMobile ? "87vw" : "41rem"};
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -93,9 +101,9 @@ const CalendarBtn = styled.button<{ disabled: boolean }>`
   border: none;
 
   img {
-    width: 2.5rem;
+    width: ${isMobile ? "2rem" : "2.5rem"};
     border-radius: 50%;
-    padding: 0.6rem;
+    padding: ${isMobile ? "0.5rem" : "0.6rem"};
     cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
     opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
     background-color: white;

@@ -1,10 +1,12 @@
 import React from "react";
+import { isMobile } from "react-device-detect";
 
 // types
 import { ContactMediumProps } from "../types";
 
 // assets
-import signature from "../assets/signature.png";
+import expand from "../assets/enlarge.png";
+import paperPlane from "../assets/paper-plane.png";
 
 // styles
 import {
@@ -29,7 +31,7 @@ const Canvas = ({ isActive }: ContactMediumProps): JSX.Element => {
             <LightInk />
           </div>
           <button>
-            <img src={signature} alt="send" />
+            <img src={isMobile ? expand : paperPlane} alt="send" />
           </button>
         </Controls>
       </BoardOutline>

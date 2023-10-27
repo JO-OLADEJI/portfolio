@@ -105,6 +105,7 @@ const Home = (): JSX.Element => {
             <img src={downChevronS} alt="scroll down" />
           </ScrollIndicator>
         )}
+        {/* TODO: video not showing up in prod. */}
         <div>
           <JoshPrint
             ref={fingerprintVideo}
