@@ -5,8 +5,8 @@ export const Outline = styled.div`
   position: fixed;
   left: ${isMobile ? "2rem" : "3rem"};
   bottom: ${isMobile ? "6rem" : "1.5rem"};
-  border: 2px solid #00000010;
-  border-radius: 1rem;
+  border: 2px solid ${isMobile ? "black" : "#00000010"};
+  border-radius: .3rem;
   padding-left: 1rem;
   padding-top: 1rem;
   padding-bottom: 0.5rem;
@@ -16,9 +16,12 @@ export const Outline = styled.div`
   justify-content: center;
   align-items: center;
 
-  &:hover {
-    border: 2px solid black;
-  }
+  ${!isMobile &&
+  css`
+    &:hover {
+      border: 2px solid black;
+    }
+  `}
 
   div:last-child {
     width: 2rem;
@@ -31,13 +34,16 @@ export const Outline = styled.div`
     background-color: #cccccc;
     transition: background-color 0.3s ease-out;
 
-    &:hover {
-      background-color: #999999;
-    }
+    ${!isMobile &&
+    css`
+      &:hover {
+        background-color: #999999;
+      }
 
-    &:hover img {
-      opacity: 1;
-    }
+      &:hover img {
+        opacity: 1;
+      }
+    `}
   }
 `;
 
@@ -53,6 +59,7 @@ const rotate = keyframes`
 
 export const Disc = styled.img<{ $isPlaying: boolean }>`
   width: 6rem;
+  filter: ${isMobile ? "contrast(150%);" : "none"};
   ${({ $isPlaying }) =>
     $isPlaying
       ? css`

@@ -6,6 +6,7 @@ import React, {
   useRef,
 } from "react";
 import { isMobile } from "react-device-detect";
+import TypeIt from "typeit-react";
 
 // context
 import { GlobalContext } from "../contexts/Global";
@@ -90,9 +91,38 @@ const Home = (): JSX.Element => {
           </h5>
           <h1>FingerPrint Pad</h1>
           <ul>
-            <li>- lorem ipsum dolor sit amet.</li>
-            <li>- clear, crisp imprint.</li>
-            <li>- use on any paper.</li>
+            <li>
+              <TypeIt
+                options={{
+                  strings: ["- lorem ipsum dolor sit amet."],
+                  speed: 25,
+                  waitUntilVisible: true,
+                  cursor: false,
+                }}
+              />
+            </li>
+            <li>
+              <TypeIt
+                options={{
+                  strings: ["- clear, crisp imprint."],
+                  speed: 15,
+                  startDelay: 1000,
+                  waitUntilVisible: true,
+                  cursor: false,
+                }}
+              />
+            </li>
+            <li>
+              <TypeIt
+                options={{
+                  strings: ["- use on any paper."],
+                  speed: 15,
+                  startDelay: 2000,
+                  waitUntilVisible: true,
+                  cursor: false,
+                }}
+              />
+            </li>
           </ul>
           <div>
             <p>Item #717061</p>

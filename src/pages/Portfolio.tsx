@@ -55,8 +55,6 @@ const Portfolio = (): JSX.Element => {
     const helpMe = async () => {
       const access = await requestAccess();
       setOrientationAccess(access);
-      // TODO: remove in prod.
-      console.log({ access });
     };
     helpMe();
   }, [requestAccess]);
@@ -80,7 +78,10 @@ const Portfolio = (): JSX.Element => {
         <p style={{ fontWeight: "bold " }}>
           Orientation Access: {`${orientationAccess}`}
         </p>
-        <p>{`${error}`}</p>
+        {error && <p>{`${error}`}</p>}
+        <p style={{ fontWeight: "bold " }}>alpha: {orientation?.alpha}</p>
+        <p style={{ fontWeight: "bold " }}>beta: {orientation?.beta}</p>
+        <p style={{ fontWeight: "bold " }}>gamma: {orientation?.gamma}</p>
       </div>
       <ContentLayer
         $isMenuOpen={globalContext.isMenuOpen}
