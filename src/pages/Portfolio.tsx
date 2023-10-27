@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext } from "react";
+import React, { useState, useCallback, useContext, useEffect } from "react";
 import { isMobile } from "react-device-detect";
 
 // context
@@ -8,6 +8,9 @@ import { GlobalContext } from "../contexts/Global";
 import Nav from "../components/Nav";
 import arrowUp from "../assets/up-arrow.png";
 import RecordPlayer from "../components/RecordPlayer";
+
+// hooks
+import { useDeviceOrientation } from "../hooks/useDeviceOrientation";
 
 // data
 import projects from "../data/projects.json";
@@ -23,9 +26,11 @@ import {
 
 const Portfolio = (): JSX.Element => {
   const globalContext = useContext(GlobalContext);
+  const { requestAccess, error } = useDeviceOrientation();
   const [rotateX, setRotateX] = useState<number>(0);
   const [rotateY, setRotateY] = useState<number>(0);
   const [projectIndex, setProjectIndex] = useState<number>(0);
+  const [orientationAccess, setOrientationAccess] = useState<boolean>(false);
 
   const handlePageHover = useCallback(
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
@@ -37,9 +42,44 @@ const Portfolio = (): JSX.Element => {
     []
   );
 
+  const handleDeviceOrientation = useCallback((e: DeviceOrientationEvent) => {
+    if (!isMobile) return;
+    const xRotation = ((e.beta ?? 90) - 90) / 4.5;
+    const yRotation = -1 * ((e.gamma ?? 0) / 3);
+    setRotateX(yRotation);
+    setRotateY(xRotation);
+  }, []);
+
+  useEffect(() => {
+    const helpMe = async () => {
+      const access = await requestAccess();
+      setOrientationAccess(access);
+      console.log({ access });
+    };
+    helpMe();
+  }, [requestAccess]);
+
+  useEffect(() => {
+    window.addEventListener("deviceorientation", handleDeviceOrientation, true);
+
+    return () => {
+      window.removeEventListener(
+        "deviceorientation",
+        handleDeviceOrientation,
+        true
+      );
+    };
+  }, [handleDeviceOrientation]);
+
   return (
-    <Outline onMouseMove={handlePageHover}>
+    <Outline onMouseMove={(e) => !isMobile && handlePageHover(e)}>
       <Nav page={"portfolio"} />
+      <div style={{ textAlign: "center" }}>
+        <p style={{ fontWeight: "bold " }}>
+          Orientation Access: {`${orientationAccess}`}
+        </p>
+        <p>{`${error}`}</p>
+      </div>
       <ContentLayer
         $isMenuOpen={globalContext.isMenuOpen}
         style={{

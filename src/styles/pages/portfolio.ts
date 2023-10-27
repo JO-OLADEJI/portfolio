@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { isMobile } from "react-device-detect";
 
 export const Outline = styled.div`
@@ -9,14 +9,21 @@ export const Outline = styled.div`
 
 export const ContentLayer = styled.div<{ $isMenuOpen: boolean }>`
   padding-top: 3rem;
-  transform-style: ${isMobile ? "flat" : "preserve-3d"};
+  transform-style: preserve-3d;
   transition: filter 0.5s ease-out;
   filter: ${({ $isMenuOpen }) =>
     isMobile && $isMenuOpen ? "blur(10px)" : "none"};
+
+  ${isMobile
+    ? css`
+        padding: 0;
+        margin-top: 2rem;
+      `
+    : null}
 `;
 
 export const Display = styled.div`
-  margin: 2rem auto;
+  margin: ${isMobile ? "1rem" : "2rem"} auto;
   width: 47rem;
   height: 25rem;
   border-radius: 1rem;
@@ -73,6 +80,31 @@ export const Display = styled.div`
     }
   }
 
+  ${isMobile
+    ? css`
+        width: 85%;
+        height: 60vh;
+        padding: 0.5rem;
+        padding-top: 2rem;
+        box-shadow: none;
+
+        h3 {
+          font-size: 1rem;
+          padding: 0 1rem;
+        }
+
+        ul {
+          border-radius: 0.5rem;
+          margin-bottom: 1.5rem;
+
+          span {
+            display: block;
+            font-size: 1rem;
+          }
+        }
+      `
+    : null}
+
   a {
     text-align: center;
     text-decoration: none;
@@ -119,6 +151,13 @@ export const ArrowUp = styled.div<{ $disabled: boolean }>`
   background-color: white;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease-out, background-color 0.3s ease-out;
+
+  ${isMobile
+    ? css`
+        width: 2.5rem;
+        height: 2.5rem;
+      `
+    : null}
 
   &:hover {
     background-color: #00000050;
