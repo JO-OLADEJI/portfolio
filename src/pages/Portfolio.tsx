@@ -79,9 +79,15 @@ const Portfolio = (): JSX.Element => {
           Orientation Access: {`${orientationAccess}`}
         </p>
         {error && <p>{`${error}`}</p>}
-        <p style={{ fontWeight: "bold " }}>alpha: {orientation?.alpha}</p>
-        <p style={{ fontWeight: "bold " }}>beta: {orientation?.beta}</p>
-        <p style={{ fontWeight: "bold " }}>gamma: {orientation?.gamma}</p>
+        <p style={{ fontWeight: "bold " }}>
+          alpha: {Math.round(orientation?.alpha ?? 0)}
+        </p>
+        <p style={{ fontWeight: "bold " }}>
+          beta: {Math.round(orientation?.beta ?? 0)}
+        </p>
+        <p style={{ fontWeight: "bold " }}>
+          gamma: {Math.round(orientation?.gamma ?? 0)}
+        </p>
       </div>
       <ContentLayer
         $isMenuOpen={globalContext.isMenuOpen}
