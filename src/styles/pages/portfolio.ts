@@ -37,7 +37,7 @@ export const Display = styled.div`
     text-align: center;
     font-size: 2.5rem;
     margin-bottom: 1rem;
-    transform: translateZ(7rem);
+    transform: translateZ(${isMobile ? "3.5rem" : "7rem"});
   }
 
   h3 {
@@ -45,7 +45,7 @@ export const Display = styled.div`
     margin-bottom: 2rem;
     text-align: center;
     padding: 0 5rem;
-    transform: translateZ(3rem);
+    transform: translateZ(${isMobile ? "1.5rem" : "3rem"});
   }
 
   ul {
@@ -57,7 +57,7 @@ export const Display = styled.div`
     position: relative;
     padding: 1rem 1rem 0.8rem 1rem;
     border-radius: 2rem;
-    transform: translateZ(1rem);
+    transform: translateZ(${isMobile ? "0.5rem" : "1rem"});
     transform-style: preserve-3d;
 
     p {
@@ -76,7 +76,7 @@ export const Display = styled.div`
       font-size: 1.2rem;
       display: inline-block;
       width: 11rem;
-      transform: translateZ(2rem);
+      transform: translateZ(${isMobile ? "1rem" : "2rem"});
     }
   }
 
@@ -118,12 +118,12 @@ export const Display = styled.div`
     color: #ffffff;
     background-color: #6a6a6a;
     border-radius: 3rem;
-    transform: translateZ(10rem);
+    transform: translateZ(${isMobile ? "5rem" : "10rem"});
     transform-style: preserve-3d;
     transition: transform 0.3s ease-out, background-color 0.3s ease-out;
 
     &:hover {
-      transform: translateZ(8rem);
+      transform: translateZ(${isMobile ? "4rem" : "8rem"});
       background-color: black;
     }
 
@@ -132,7 +132,7 @@ export const Display = styled.div`
     }
 
     p {
-      transform: translateZ(3rem);
+      transform: translateZ(${isMobile ? "1.5rem" : "3rem"});
       transition: transform 0.3s ease-out;
     }
   }
@@ -144,7 +144,7 @@ export const ArrowUp = styled.div<{ $disabled: boolean }>`
   margin: auto;
   border-radius: 50%;
   padding: 0.5rem;
-  transform: translateZ(3rem);
+  transform: translateZ(${isMobile ? "1.5rem" : "3rem"});
   transform-style: preserve-3d;
   cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
   opacity: ${({ $disabled }) => ($disabled ? 0.3 : 1)};
@@ -161,7 +161,7 @@ export const ArrowUp = styled.div<{ $disabled: boolean }>`
 
   &:hover {
     background-color: #00000050;
-    transform: translateZ(1.5rem);
+    transform: translateZ(${isMobile ? "0.75rem" : "1.5rem"});
   }
 
   &:hover img {
@@ -171,16 +171,16 @@ export const ArrowUp = styled.div<{ $disabled: boolean }>`
   img {
     width: 100%;
     border-radius: 50%;
-    transform: translateZ(2rem);
+    transform: translateZ(${isMobile ? "1rem" : "2rem"});
     transition: transform 0.3s ease-out;
   }
 `;
 
 export const ArrowDown = styled(ArrowUp)`
-  transform: rotateZ(180deg) translateZ(3rem);
+  transform: rotateZ(180deg) translateZ(${isMobile ? "1.5rem" : "3rem"});
 
   &:hover {
     background-color: #00000050;
-    transform: rotateZ(180deg) translateZ(1.5rem);
+    transform: rotateZ(180deg) translateZ(${isMobile ? "0.75rem" : "1.5rem"});
   }
 `;

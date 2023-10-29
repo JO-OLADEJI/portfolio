@@ -42,3 +42,17 @@ export const getDistanceToTopOfViewport = (element: HTMLElement): number => {
   const elementRect: DOMRect = element.getBoundingClientRect();
   return elementRect.top;
 };
+
+export const constrain = (
+  value: number,
+  lowerBound: number,
+  upperBound: number
+): number => {
+  if (value < lowerBound) {
+    return lowerBound;
+  } else if (value > upperBound) {
+    return upperBound;
+  } else {
+    return value;
+  }
+};

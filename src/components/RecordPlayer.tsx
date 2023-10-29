@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+
+// context
+import { GlobalContext } from "../contexts/Global";
 
 // assets
 import disc from "../assets/rp-disc.png";
@@ -15,23 +18,27 @@ import {
 } from "../styles/components/record-player";
 
 const RecordPlayer = (): JSX.Element => {
-  const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const globalContext = useContext(GlobalContext);
 
   return (
     <Outline>
       <div>
-        <Disc src={disc} alt="record player disc" $isPlaying={isPlaying} />
+        <Disc
+          src={disc}
+          alt="record player disc"
+          $isPlaying={globalContext.state.isMusicPlaying}
+        />
         <Tonearm
           src={tonearm}
           alt="record player tonearm"
-          $isPlaying={isPlaying}
+          $isPlaying={globalContext.state.isMusicPlaying}
         />
       </div>
       <div>
         <PlayPauseBtn
-          src={isPlaying ? stop : play}
-          alt={isPlaying ? "stop" : "play"}
-          onClick={() => setIsPlaying((prev) => !prev)}
+          src={globalContext.state.isMusicPlaying ? stop : play}
+          alt={globalContext.state.isMusicPlaying ? "stop" : "play"}
+          onClick={() => globalContext.dispatch({ type: "TOGGLE_PLAYBACK" })}
         />
       </div>
     </Outline>

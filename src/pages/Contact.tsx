@@ -71,7 +71,7 @@ const Contact = (): JSX.Element => {
   return (
     <div>
       <Nav page={"contact"} />
-      <ContentWrapper $isMenuOpen={globalContext.isMenuOpen}>
+      <ContentWrapper $isMenuOpen={globalContext.state.isMenuOpen}>
         <ContactTabs>
           {tabs.map((tab, index) => (
             <TabButton

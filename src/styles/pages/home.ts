@@ -31,7 +31,7 @@ export const FingerPrintPad = styled.div`
 
   ul {
     margin-left: ${isMobile ? "0" : "2.8rem"};
-    margin-bottom: ${isMobile ? "2rem" : "0"};
+    margin-bottom: ${isMobile ? "2rem" : "1.5rem"};
   }
 
   li {
@@ -80,7 +80,7 @@ export const PrintScanner = styled.div`
   background: linear-gradient(0deg, #ffffff50, #ffffff, #ffffff50);
   z-index: 1;
   animation: ${scan} 1s linear alternate;
-  animation-iteration-count: ${isMobile ? "6" : "infinite"};
+  animation-iteration-count: ${isMobile ? "6" : "16"};
 `;
 
 export const Barcode = styled.img`
@@ -89,7 +89,7 @@ export const Barcode = styled.img`
 `;
 
 export const JoshPrint = styled.video`
-  width: ${isMobile ? "85%" : "27rem"};
+  width: ${isMobile ? "98%" : "27rem"};
   ${isMobile
     ? css`
         display: block;

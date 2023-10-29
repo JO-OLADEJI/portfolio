@@ -21,7 +21,8 @@ import { getDistanceToTopOfViewport } from "../utils";
 // assets
 import dummyPrint from "../assets/dummy-print.png";
 import barcode from "../assets/barcode.png";
-import joshprint from "../assets/joshprint.webm";
+import joshprintM from "../assets/joshprint.webm";
+import joshprint from "../assets/joshprint.mp4";
 import downChevronS from "../assets/down-chevron-s.png";
 
 // styles
@@ -47,7 +48,7 @@ const Home = (): JSX.Element => {
     isMobile && fingerprintVideo.current?.pause();
     setTimeout(() => {
       setShowScrollIndicator(true);
-    }, 3 * 1000);
+    }, 4.5 * 1000);
   }, []);
 
   const handleScrollIndicatorFade = useCallback((): void => {
@@ -77,10 +78,7 @@ const Home = (): JSX.Element => {
   return (
     <div>
       <Nav page={"home"} />
-      <ContentWrapper
-        $isMenuOpen={globalContext.isMenuOpen}
-        onScroll={() => console.log("page scrolling")}
-      >
+      <ContentWrapper $isMenuOpen={globalContext.state.isMenuOpen}>
         <FingerPrintPad className="old-font">
           <DummyPrint>
             <PrintScanner />
@@ -89,13 +87,13 @@ const Home = (): JSX.Element => {
           <h5>
             thecodeographer<span>&#174;</span>
           </h5>
-          <h1>FingerPrint Pad</h1>
+          <h1>A Unique Print.</h1>
           <ul>
             <li>
               <TypeIt
                 options={{
-                  strings: ["- lorem ipsum dolor sit amet."],
-                  speed: 25,
+                  strings: ["- our fingerprints are exclusive,"],
+                  speed: 50,
                   waitUntilVisible: true,
                   cursor: false,
                 }}
@@ -104,20 +102,20 @@ const Home = (): JSX.Element => {
             <li>
               <TypeIt
                 options={{
-                  strings: ["- clear, crisp imprint."],
-                  speed: 15,
-                  startDelay: 1000,
-                  waitUntilVisible: true,
-                  cursor: false,
-                }}
-              />
-            </li>
-            <li>
-              <TypeIt
-                options={{
-                  strings: ["- use on any paper."],
-                  speed: 15,
+                  strings: ["- which mirrors our uniqueness."],
+                  speed: 50,
                   startDelay: 2000,
+                  waitUntilVisible: true,
+                  cursor: false,
+                }}
+              />
+            </li>
+            <li>
+              <TypeIt
+                options={{
+                  strings: ["- here's an imprint unveiling mine."],
+                  speed: 50,
+                  startDelay: 3500,
                   waitUntilVisible: true,
                   cursor: false,
                 }}
@@ -135,15 +133,18 @@ const Home = (): JSX.Element => {
             <img src={downChevronS} alt="scroll down" />
           </ScrollIndicator>
         )}
-        {/* TODO: video not showing up in prod. */}
         <div>
           <JoshPrint
             ref={fingerprintVideo}
             autoPlay={true}
             muted={true}
+            controls={false}
+            playsInline={true}
+            webkit-playsInline={true}
             onEnded={() => setVideoHasEnded(true)}
           >
-            <source src={joshprint} type="video/webm" />
+            <source src={joshprintM} type="video/webm" />
+            <source src={joshprint} type="video/mp4" />
           </JoshPrint>
         </div>
       </ContentWrapper>

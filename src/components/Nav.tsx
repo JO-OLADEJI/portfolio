@@ -29,12 +29,15 @@ const Nav = ({ page }: NavProps): JSX.Element => {
 
   return (
     <Outline>
-      <RouteOutline $isMenuOpen={globalContext.isMenuOpen}>
+      <RouteOutline $isMenuOpen={globalContext.state.isMenuOpen}>
         {links.map((link, index) => (
           <Route
             key={index}
             $iscurrentroute={page === link}
-            onClick={() => globalContext.setIsMenuOpen(false)}
+            onClick={() =>
+              globalContext.state.isMenuOpen &&
+              globalContext.dispatch({ type: "TOGGLE_MENU" })
+            }
           >
             <Link to={`/${link !== "home" ? link : ""}`}>
               {link.charAt(0).toUpperCase() + link.slice(1)}
@@ -45,8 +48,8 @@ const Nav = ({ page }: NavProps): JSX.Element => {
       </RouteOutline>
       {isMobile && (
         <BurgerMenu
-          $isMenuOpen={globalContext.isMenuOpen}
-          onClick={() => globalContext.setIsMenuOpen((prev) => !prev)}
+          $isMenuOpen={globalContext.state.isMenuOpen}
+          onClick={() => globalContext.dispatch({ type: "TOGGLE_MENU" })}
         >
           <span />
           <span />

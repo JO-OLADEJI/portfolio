@@ -15,6 +15,9 @@ import { useDeviceOrientation } from "../hooks/useDeviceOrientation";
 // data
 import projects from "../data/projects.json";
 
+// utils
+import { constrain } from "../utils";
+
 // styles
 import {
   Outline,
@@ -44,9 +47,16 @@ const Portfolio = (): JSX.Element => {
 
   const handleDeviceOrientation = useCallback(() => {
     if (!isMobile) return;
-    // TODO: swith flat page render to a user's natural screen position
-    const xRotation = ((orientation?.beta ?? 90) - 90) / 4.5;
-    const yRotation = -1 * ((orientation?.gamma ?? 0) / 3);
+    // orientation.beta = 0; return -15
+    // orientation.beta = 90; return 15
+    const xRotation = constrain(((orientation?.beta ?? 45) - 45) / 3, -15, 15);
+    // orientation.gamma = 45; return -30
+    // orientation.gamma = -45; return 30
+    const yRotation = constrain(
+      -1 * ((orientation?.gamma ?? 0) / 1.5),
+      -30,
+      30
+    );
     setRotateX(yRotation);
     setRotateY(xRotation);
   }, [orientation?.beta, orientation?.gamma]);
@@ -90,7 +100,7 @@ const Portfolio = (): JSX.Element => {
         </p>
       </div>
       <ContentLayer
-        $isMenuOpen={globalContext.isMenuOpen}
+        $isMenuOpen={globalContext.state.isMenuOpen}
         style={{
           transform: `rotateX(${rotateY}deg) rotateY(${rotateX}deg)`,
         }}

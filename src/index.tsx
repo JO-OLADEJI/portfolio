@@ -1,21 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 
 // contexts
 import { GlobalContextProvider } from "./contexts/Global";
 
-// pages
-import Home from "./pages/Home";
-import Portfolio from "./pages/Portfolio";
-import Contact from "./pages/Contact";
-import ErrorPage from "./pages/Error";
-
 // fonts
 import tyewriter from "./fonts/typewriter.ttf";
 import courier from "./fonts/courier.ttf";
 import courierBold from "./fonts/courier-bold.ttf";
+import App from "./App";
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -51,27 +45,11 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/portfolio",
-    element: <Portfolio />,
-  },
-  {
-    path: "/contact",
-    element: <Contact />,
-  },
-]);
-
 root.render(
   <React.StrictMode>
     <GlobalStyle />
     <GlobalContextProvider>
-      <RouterProvider router={router} />
+      <App />
     </GlobalContextProvider>
   </React.StrictMode>
 );
