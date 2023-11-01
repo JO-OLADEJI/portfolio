@@ -29,11 +29,10 @@ import {
 
 const Portfolio = (): JSX.Element => {
   const globalContext = useContext(GlobalContext);
-  const { requestAccess, error, orientation } = useDeviceOrientation();
+  const { requestAccess, orientation } = useDeviceOrientation();
   const [rotateX, setRotateX] = useState<number>(0);
   const [rotateY, setRotateY] = useState<number>(0);
   const [projectIndex, setProjectIndex] = useState<number>(0);
-  const [orientationAccess, setOrientationAccess] = useState<boolean>(false);
 
   const handlePageHover = useCallback(
     (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
@@ -47,11 +46,7 @@ const Portfolio = (): JSX.Element => {
 
   const handleDeviceOrientation = useCallback(() => {
     if (!isMobile) return;
-    // orientation.beta = 0; return -15
-    // orientation.beta = 90; return 15
     const xRotation = constrain(((orientation?.beta ?? 45) - 45) / 3, -15, 15);
-    // orientation.gamma = 45; return -30
-    // orientation.gamma = -45; return 30
     const yRotation = constrain(
       -1 * ((orientation?.gamma ?? 0) / 1.5),
       -30,
@@ -62,11 +57,10 @@ const Portfolio = (): JSX.Element => {
   }, [orientation?.beta, orientation?.gamma]);
 
   useEffect(() => {
-    const helpMe = async () => {
-      const access = await requestAccess();
-      setOrientationAccess(access);
+    const accessDeviceOrientation = async () => {
+      await requestAccess();
     };
-    helpMe();
+    accessDeviceOrientation();
   }, [requestAccess]);
 
   useEffect(() => {
@@ -84,21 +78,6 @@ const Portfolio = (): JSX.Element => {
   return (
     <Outline onMouseMove={(e) => !isMobile && handlePageHover(e)}>
       <Nav page={"portfolio"} />
-      <div style={{ textAlign: "center" }}>
-        <p style={{ fontWeight: "bold " }}>
-          Orientation Access: {`${orientationAccess}`}
-        </p>
-        {error && <p>{`${error}`}</p>}
-        <p style={{ fontWeight: "bold " }}>
-          alpha: {Math.round(orientation?.alpha ?? 0)}
-        </p>
-        <p style={{ fontWeight: "bold " }}>
-          beta: {Math.round(orientation?.beta ?? 0)}
-        </p>
-        <p style={{ fontWeight: "bold " }}>
-          gamma: {Math.round(orientation?.gamma ?? 0)}
-        </p>
-      </div>
       <ContentLayer
         $isMenuOpen={globalContext.state.isMenuOpen}
         style={{

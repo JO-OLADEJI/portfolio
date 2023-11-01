@@ -6,7 +6,7 @@ export const Outline = styled.div`
   left: ${isMobile ? "2rem" : "3rem"};
   bottom: ${isMobile ? "6rem" : "1.5rem"};
   border: 2px solid ${isMobile ? "black" : "#00000010"};
-  border-radius: .3rem;
+  border-radius: 1rem;
   padding-left: 1rem;
   padding-top: 1rem;
   padding-bottom: 0.5rem;
