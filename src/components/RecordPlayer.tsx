@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import ReactGA from "react-ga";
 
 // context
 import { GlobalContext } from "../contexts/Global";
@@ -38,7 +39,13 @@ const RecordPlayer = (): JSX.Element => {
         <PlayPauseBtn
           src={globalContext.state.isMusicPlaying ? stop : play}
           alt={globalContext.state.isMusicPlaying ? "stop" : "play"}
-          onClick={() => globalContext.dispatch({ type: "TOGGLE_PLAYBACK" })}
+          onClick={() => {
+            globalContext.dispatch({ type: "TOGGLE_PLAYBACK" });
+            ReactGA.event({
+              category: "Record Player Interaction",
+              action: "Playback Toggle",
+            });
+          }}
         />
       </div>
     </Outline>

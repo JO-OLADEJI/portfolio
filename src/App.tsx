@@ -2,9 +2,13 @@ import React, { useContext } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Sound from "react-sound";
 import { isMobile } from "react-device-detect";
+import ReactGA from "react-ga";
 
 // context
 import { GlobalContext } from "./contexts/Global";
+
+// config
+import config from "./config.json";
 
 // pages
 import Home from "./pages/Home";
@@ -30,6 +34,8 @@ const router = createBrowserRouter([
     element: <Contact />,
   },
 ]);
+
+ReactGA.initialize(config["ga-tracking-id"]);
 
 const App = (): JSX.Element => {
   const globalContext = useContext(GlobalContext);

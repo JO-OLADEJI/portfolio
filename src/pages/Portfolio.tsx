@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useContext, useEffect } from "react";
 import { isMobile } from "react-device-detect";
+import ReactGA from "react-ga";
 
 // context
 import { GlobalContext } from "../contexts/Global";
@@ -28,6 +29,7 @@ import {
 } from "../styles/pages/portfolio";
 
 const Portfolio = (): JSX.Element => {
+  ReactGA.pageview(window.location.pathname);
   const globalContext = useContext(GlobalContext);
   const { requestAccess, orientation } = useDeviceOrientation();
   const [rotateX, setRotateX] = useState<number>(0);
@@ -103,8 +105,19 @@ const Portfolio = (): JSX.Element => {
               <span key={index}>{tool}</span>
             ))}
           </ul>
-          <a href={projects[projectIndex].url} target="_blank" rel="noreferrer">
-            <p className="old-font">Step Inside</p>
+          <a
+            href={projects[projectIndex].url}
+            target="_blank"
+            rel="noreferrer"
+            onClick={() =>
+              ReactGA.event({
+                category: "Project Interaction",
+                action: "View Project",
+                label: projects[projectIndex].name,
+              })
+            }
+          >
+            <p className="old-font">View Project</p>
           </a>
         </Display>
         <ArrowDown

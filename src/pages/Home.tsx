@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { isMobile } from "react-device-detect";
 import TypeIt from "typeit-react";
+import ReactGA from "react-ga";
 
 // context
 import { GlobalContext } from "../contexts/Global";
@@ -37,6 +38,7 @@ import {
 } from "../styles/pages/home";
 
 const Home = (): JSX.Element => {
+  ReactGA.pageview(window.location.pathname);
   const globalContext = useContext(GlobalContext);
   const [showScrollIndicator, setShowScrollIndicator] =
     useState<boolean>(false);
@@ -140,7 +142,6 @@ const Home = (): JSX.Element => {
             muted={true}
             controls={false}
             playsInline={true}
-            webkit-playsInline={true}
             onEnded={() => setVideoHasEnded(true)}
           >
             <source src={joshprintM} type="video/webm" />

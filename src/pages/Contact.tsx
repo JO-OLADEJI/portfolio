@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { isMobile } from "react-device-detect";
+import ReactGA from "react-ga";
 
 // context
 import { GlobalContext } from "../contexts/Global";
@@ -27,6 +28,7 @@ import {
 } from "../styles/pages/contact";
 
 const Contact = (): JSX.Element => {
+  ReactGA.pageview(window.location.pathname);
   const globalContext = useContext(GlobalContext);
   const [currentTab, setCurrentTab] = useState<ContactTab>("meeting");
   const [tabDisplayIndex, setTabDisplayIndex] = useState<number>(0);
@@ -77,7 +79,14 @@ const Contact = (): JSX.Element => {
             <TabButton
               key={index}
               $selected={currentTab === tab.name}
-              onClick={(e) => handleTabClick(e, tab.name, index)}
+              onClick={(e) => {
+                handleTabClick(e, tab.name, index);
+                ReactGA.event({
+                  category: "Contact Tab Interaction",
+                  action: "Tab Switch",
+                  label: tab.name,
+                });
+              }}
             >
               <p className="old-font">{tab.name}</p>
               <p>{tab.user}</p>
