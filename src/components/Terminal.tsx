@@ -16,6 +16,7 @@ import {
   CmdInput,
   NewLine,
 } from "../styles/components/terminal";
+import axios from "axios";
 
 const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
   const TERMINAL_PROMPT = "guest@thecodeographer.com ~ % ";
@@ -28,10 +29,49 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
     [key: string]: TerminalMessage;
   }>({});
   const [activeFile, setActiveFile] = useState<string>("");
+  const [isCallingAPI, setIsCallingAPI] = useState<boolean>(false);
   const defaultCmdInput = useRef<HTMLTextAreaElement>(null);
 
+  const postTerminalContact = useCallback(
+    async (details: TerminalMessage) => {
+      // TODO: implement command-line loader
+      const CMD_ERROR: Log = { type: "error", literal: "" };
+      const CMD_RESPONSE: Log = { type: "response", literal: "" };
+      try {
+        setIsCallingAPI(true);
+        const res = await axios.post(
+          "http://localhost:8000/api/contact/terminal",
+          {
+            ...details,
+            src: "terminal",
+          }
+        );
+        if (res.status === 200) {
+          CMD_RESPONSE.literal = `message file '${activeFile}' successfully dispatched :)`;
+          const storedFiles = { ...terminalFiles };
+          delete storedFiles[activeFile];
+
+          setTerminalFiles(() => storedFiles);
+          setTerminalLogs((logs) => [...logs, CMD_RESPONSE]);
+        } else {
+          CMD_ERROR.literal = `cdgsh - error: internal server error`;
+        }
+        setIsCallingAPI(false);
+      } catch (error) {
+        console.error(error);
+        CMD_ERROR.literal = `cdgsh - error: ${(error as any).response.data}`;
+        setTerminalLogs((logs) => [...logs, CMD_ERROR]);
+        setIsCallingAPI(false);
+      }
+    },
+    [activeFile, terminalFiles]
+  );
+
   const executeCommand = useCallback(
-    (command: Command, payload: string | undefined): Log | undefined => {
+    async (
+      command: Command,
+      payload: string | undefined
+    ): Promise<Log | undefined> => {
       const CMD_RESPONSE: Log = { type: "response", literal: "" };
       const CMD_ERROR: Log = { type: "error", literal: "" };
       const DEFAULT_ERROR: Log = {
@@ -119,10 +159,8 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
               return CMD_ERROR;
             }
 
-            // TODO: hit api endpoint to send request
-            // TODO: implement command-line loader
-            CMD_RESPONSE.literal = "posting memo . . .";
-            console.log(value);
+            CMD_RESPONSE.literal = "dispatching . . .";
+            postTerminalContact(value as TerminalMessage);
             return CMD_RESPONSE;
           }
           break;
@@ -142,11 +180,11 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
 
       return DEFAULT_ERROR;
     },
-    [terminalFiles, commandLiteral, activeFile]
+    [terminalFiles, commandLiteral, activeFile, postTerminalContact]
   );
 
   const handleTerminalActions = useCallback(
-    (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    async (event: React.KeyboardEvent<HTMLTextAreaElement>): Promise<void> => {
       if (event.key === "Enter") {
         event.preventDefault();
 
@@ -177,7 +215,7 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
           };
           logsCopy.push(error);
         } else if (COMMAND_LIST.includes(inputtedCommand)) {
-          const response = executeCommand(
+          const response = await executeCommand(
             inputtedCommand,
             commandLiteral.trim().slice(inputtedCommand.length + 1)
           );
@@ -242,15 +280,17 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
           ) : null
         )}
         <div>
-          <CmdInput
-            ref={defaultCmdInput}
-            value={`${" ".repeat(TERMINAL_PROMPT.length) + commandLiteral}`}
-            onKeyDown={(e) => handleTerminalActions(e)}
-            onChange={(e) =>
-              setCommandLiteral(e.target.value.slice(TERMINAL_PROMPT.length))
-            }
-          />
-          <NewLine>{TERMINAL_PROMPT}</NewLine>
+          {!isCallingAPI && (
+            <CmdInput
+              ref={defaultCmdInput}
+              value={`${" ".repeat(TERMINAL_PROMPT.length) + commandLiteral}`}
+              onKeyDown={(e) => handleTerminalActions(e)}
+              onChange={(e) =>
+                setCommandLiteral(e.target.value.slice(TERMINAL_PROMPT.length))
+              }
+            />
+          )}
+          {!isCallingAPI && <NewLine>{TERMINAL_PROMPT}</NewLine>}
         </div>
       </Interface>
     </Outline>
