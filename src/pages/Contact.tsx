@@ -106,7 +106,7 @@ const Contact = (): JSX.Element => {
         <Canvas isActive={currentTab === "canvas"} />
         <Meeting isActive={currentTab === "meeting"} />
 
-        {!isMobile && <RecordPlayer />}
+        {/* {!isMobile && <RecordPlayer />} */}
       </ContentWrapper>
     </div>
   );

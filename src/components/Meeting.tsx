@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Joi from "joi";
+import axios from "axios";
 import { isMobile } from "react-device-detect";
 
 // components
@@ -11,11 +12,7 @@ import leftChevron from "../assets/left-chevron.png";
 // types, utils, constants
 import { ContactMediumProps, MeetingDay } from "../types";
 import { MEETING_TIME } from "../constants";
-import {
-  getDayname,
-  addBookedTimestampsToDB,
-  getBookedTimestampsFromDB,
-} from "../utils";
+import { getDayname, getBookedTimestampsFromDB } from "../utils";
 
 // styles
 import {
@@ -37,6 +34,7 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
   const [email, setEmail] = useState<string>("");
   const [brand, setBrand] = useState<string>("");
   const [memorandum, setMemorandum] = useState<string>("");
+  const [disableButton, setDisableButton] = useState<boolean>(false);
   const [indexA, setIndexA] = useState<number>(0);
   const [indexB, setIndexB] = useState<number>(isMobile ? 3 : 5);
 
@@ -74,9 +72,12 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
       });
     }
 
-    const scheduledTimestamps = getBookedTimestampsFromDB();
+    const asyncCalls = async () => {
+      const scheduledTimestamps = await getBookedTimestampsFromDB();
+      setBookedTimestamps(() => scheduledTimestamps);
+    };
+    asyncCalls();
     setMeetingDays(() => leeway);
-    setBookedTimestamps(() => scheduledTimestamps);
   }, []);
 
   const scrollCalenderLeft = (
@@ -99,35 +100,60 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
     }
   };
 
-  const handleMeetingSchedule = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleMeetingSchedule = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault();
 
-    // TODO: async code here
+    // TODO: remove alert and replace with better ux
     if (!selectedTime) {
       return alert("meeting time NOT selected!");
     }
 
-    const formInput = { email, brand, memorandum };
+    const formInput = {
+      email,
+      brand,
+      memorandum,
+      meetingTimestamp: selectedTime.valueOf(),
+    };
     const { value, error } = Joi.object({
       email: Joi.string()
         .email({ tlds: { allow: false } })
         .required(),
       brand: Joi.string().min(2).required(),
-      memorandum: Joi.string().min(5).max(300),
+      memorandum: Joi.string().min(5).max(300).required(),
+      meetingTimestamp: Joi.number().min(new Date().valueOf()).required(),
     }).validate(formInput);
 
+    // TODO: remove alert and replace with better ux
     if (error) {
       return alert(error.details[0].message);
     }
-    value.meetingTime = selectedTime.toString();
-    console.log({ mail: value });
-    const scheduledTimestamps = addBookedTimestampsToDB(selectedTime);
 
-    setBookedTimestamps(() => scheduledTimestamps);
-    setSelectedTime(null);
-    setEmail("");
-    setBrand("");
-    setMemorandum("");
+    try {
+      setDisableButton(true);
+      const res = await axios.post(
+        "http://localhost:8000/api/contact/meeting",
+        {
+          ...value,
+          src: "meeting",
+        }
+      );
+      if (res.status === 200) {
+        const scheduledTimestamps = await getBookedTimestampsFromDB();
+        setBookedTimestamps(() => scheduledTimestamps);
+        setSelectedTime(null);
+        setEmail("");
+        setBrand("");
+        setMemorandum("");
+      } else {
+        // TODO: handle API failed state
+      }
+      setDisableButton(false);
+    } catch (err) {
+      console.error(err);
+      setDisableButton(false);
+    }
   };
 
   const handleTimeReserve = (disabled: boolean, time: Date): void => {
@@ -197,7 +223,11 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
             <TextCount id="text-count">{memorandum.length}/300</TextCount>
           </div>
 
-          <ScheduleButton type="submit" className="old-font">
+          <ScheduleButton
+            type="submit"
+            disabled={disableButton}
+            className="old-font"
+          >
             Schedule
           </ScheduleButton>
         </Form>

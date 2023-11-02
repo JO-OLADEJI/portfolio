@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const getDayname = (day: number): string => {
   switch (day) {
     case 0:
@@ -19,23 +21,14 @@ export const getDayname = (day: number): string => {
   }
 };
 
-const DB_KEY = "scheduled";
-// [interim]: use localStorage as DB
-export const getBookedTimestampsFromDB = (): number[] => {
-  const scheduledTimestamps: string | null = localStorage.getItem(DB_KEY);
-  if (!scheduledTimestamps) {
+export const getBookedTimestampsFromDB = async (): Promise<number[]> => {
+  try {
+    const res = await axios.get("http://localhost:8000/api/contact/meeting");
+    return res.data.scheduled ?? [];
+  } catch (error) {
+    console.error(error);
     return [];
   }
-
-  return JSON.stringify(scheduledTimestamps) as unknown as number[];
-};
-
-// [interim]: use localStorage as DB
-export const addBookedTimestampsToDB = (newBookedTime: Date): number[] => {
-  const scheduledTimestamps: number[] = getBookedTimestampsFromDB();
-  scheduledTimestamps.push(newBookedTime.valueOf());
-  localStorage.setItem(DB_KEY, JSON.stringify(scheduledTimestamps));
-  return scheduledTimestamps;
 };
 
 export const getDistanceToTopOfViewport = (element: HTMLElement): number => {
