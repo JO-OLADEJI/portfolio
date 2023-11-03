@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { isMobile } from "react-device-detect";
 
 export const Outline = styled.div<{ $isSelected: boolean }>`
@@ -47,25 +47,24 @@ export const Controls = styled.div`
   img {
     width: ${isMobile ? "1.2rem" : "1.6rem"};
     opacity: 0.6;
+    transition: opacity 0.3s ease-out;
+  }
+
+  img:hover {
+    opacity: 1;
   }
 `;
 
-export const Ink = styled.div`
+export const Ink = styled.div<{ $isActive: boolean }>`
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
   margin: 0.5rem auto;
   cursor: cell;
-`;
 
-export const DarkInk = styled(Ink)`
-  background-color: #000000;
-`;
-
-export const GreyInk = styled(Ink)`
-  background-color: #7b7b7b;
-`;
-
-export const LightInk = styled(Ink)`
-  background-color: #cacaca;
+  ${({ $isActive }) =>
+    $isActive &&
+    css`
+      border: 2px solid #fc740a;
+    `};
 `;
