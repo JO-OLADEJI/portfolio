@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Joi from "joi";
+import axios from "axios";
 import { isMobile } from "react-device-detect";
 
 // config
@@ -33,6 +34,7 @@ const Form = ({ isActive }: ContactMediumProps): JSX.Element => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [message, setMessage] = useState<string>("");
+  const [disableButton, setDisableButton] = useState<boolean>(false);
 
   const handleMailCopy = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -42,23 +44,34 @@ const Form = ({ isActive }: ContactMediumProps): JSX.Element => {
     alert(contactMail + " copied to clipboard!");
   };
 
-  const handleMailSend = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleMailSend = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault();
 
-    // TODO: async code here
-    // 1. validate input values
     const { value, error } = schema.validate({ name, email, message });
     if (error) {
       return alert(error.details[0].message);
     }
 
-    // 2. send the value object to contact@thecodeographer.com
-    console.log({ mail: value });
-
-    // 3. clear inputs
-    setName("");
-    setEmail("");
-    setMessage("");
+    try {
+      setDisableButton(true);
+      const res = await axios.post("http://localhost:8000/api/contact/form", {
+        ...value,
+        src: "form",
+      });
+      if (res.status === 200) {
+        setName("");
+        setEmail("");
+        setMessage("");
+      } else {
+        // TODO: handle API failed state
+      }
+      setDisableButton(false);
+    } catch (error) {
+      console.error(error);
+      setDisableButton(false);
+    }
   };
 
   return (
@@ -96,7 +109,11 @@ const Form = ({ isActive }: ContactMediumProps): JSX.Element => {
           <TextCount id="text-count-form">{message.length}/300</TextCount>
         </div>
 
-        <DispatchButton type="submit" className="old-font">
+        <DispatchButton
+          type="submit"
+          disabled={disableButton}
+          className="old-font"
+        >
           Dispatch
         </DispatchButton>
       </FormElement>

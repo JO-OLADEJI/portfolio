@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import Joi from "joi";
+import axios from "axios";
 
 // components
 import { CommandLog, ResponseLog, ErrorLog } from "./Logs";
@@ -16,7 +17,6 @@ import {
   CmdInput,
   NewLine,
 } from "../styles/components/terminal";
-import axios from "axios";
 
 const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
   const TERMINAL_PROMPT = "guest@thecodeographer.com ~ % ";

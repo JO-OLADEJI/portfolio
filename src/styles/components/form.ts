@@ -75,6 +75,11 @@ export const DispatchButton = styled.button`
   width: 100%;
   border-radius: 2rem;
   cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 `;
 
 export const MailInfo = styled.div`
