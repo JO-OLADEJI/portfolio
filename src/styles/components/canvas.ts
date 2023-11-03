@@ -8,6 +8,9 @@ export const Outline = styled.div<{ $isSelected: boolean }>`
 `;
 
 export const BoardOutline = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 3rem auto;
   width: ${isMobile ? "90vw" : "60rem"};
   height: ${isMobile ? "70vh" : "30rem"};
@@ -16,14 +19,10 @@ export const BoardOutline = styled.div`
   border-radius: ${isMobile ? "0.5rem" : "1.1rem"};
 `;
 
-export const Board = styled.div`
+export const Board = styled.canvas`
   width: ${isMobile ? "96%" : "98%"};
   height: ${isMobile ? "97%" : "96%"};
   background-color: white;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
   border-radius: ${isMobile ? "0.3rem" : "0.7rem"};
 `;
 
