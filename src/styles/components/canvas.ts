@@ -5,6 +5,10 @@ export const Outline = styled.div<{ $isSelected: boolean }>`
   display: ${({ $isSelected: isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
   margin: ${isMobile ? "1.5rem 0" : "3rem 0"};
+  ${!isMobile &&
+  css`
+    margin-bottom: 10rem;
+  `}
 `;
 
 export const BoardOutline = styled.div`
@@ -24,6 +28,7 @@ export const Board = styled.canvas`
   height: ${isMobile ? "97%" : "96%"};
   background-color: white;
   border-radius: ${isMobile ? "0.3rem" : "0.7rem"};
+  cursor: crosshair;
 `;
 
 const spin = keyframes`

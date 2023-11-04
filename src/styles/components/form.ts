@@ -5,6 +5,10 @@ export const Outline = styled.div<{ $isSelected: boolean }>`
   display: ${({ $isSelected: isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
   margin: ${isMobile ? "1.5rem 0" : "3rem 0"};
+  ${!isMobile &&
+  css`
+    margin-bottom: 10rem;
+  `}
 
   span {
     font-weight: bold;

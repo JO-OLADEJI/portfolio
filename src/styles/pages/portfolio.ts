@@ -2,13 +2,13 @@ import styled, { css } from "styled-components";
 import { isMobile } from "react-device-detect";
 
 export const Outline = styled.div`
-  height: 100vh;
   perspective: 1200px;
   overflow: hidden;
 `;
 
 export const ContentLayer = styled.div<{ $isMenuOpen: boolean }>`
-  padding-top: 3rem;
+  padding-top: 2rem;
+  padding-bottom: 4rem;
   transform-style: preserve-3d;
   transition: filter 0.5s ease-out;
   filter: ${({ $isMenuOpen }) =>

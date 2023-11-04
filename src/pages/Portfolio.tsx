@@ -128,7 +128,7 @@ const Portfolio = (): JSX.Element => {
         </ArrowDown>
       </ContentLayer>
 
-      {!isMobile && <RecordPlayer />}
+      {/* {!isMobile && <RecordPlayer />} */}
     </Outline>
   );
 };

@@ -3,7 +3,6 @@ import { isMobile } from "react-device-detect";
 
 export const ContentWrapper = styled.div<{ $isMenuOpen: boolean }>`
   padding-top: ${isMobile ? "1.5rem" : "0"};
-  min-height: 100vh;
   transition: filter 0.5s ease-out;
   filter: ${({ $isMenuOpen }) =>
     isMobile && $isMenuOpen ? "blur(10px)" : "none"};

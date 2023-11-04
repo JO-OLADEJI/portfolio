@@ -3,7 +3,7 @@ import { isMobile } from "react-device-detect";
 
 export const ContentWrapper = styled.div<{ $isMenuOpen: boolean }>`
   margin-top: ${isMobile ? "3rem" : "1rem"};
-  margin-bottom: ${isMobile ? "5rem" : "0"};
+  margin-bottom: 4rem;
   display: flex;
   flex-direction: ${isMobile ? "column" : "row"};
   justify-content: center;
@@ -61,26 +61,6 @@ export const DummyPrint = styled.div`
   img {
     width: 100%;
   }
-`;
-
-const scan = keyframes`
-  0% {
-    transform: translateY(-1rem);
-  }
-
-  100% {
-    transform: translateY(10.5rem);
-  }
-`;
-
-export const PrintScanner = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 2rem;
-  background: linear-gradient(0deg, #ffffff50, #ffffff, #ffffff50);
-  z-index: 1;
-  animation: ${scan} 1s linear alternate;
-  animation-iteration-count: ${isMobile ? "6" : "16"};
 `;
 
 export const Barcode = styled.img`

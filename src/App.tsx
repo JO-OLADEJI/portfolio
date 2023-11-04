@@ -16,6 +16,10 @@ import Portfolio from "./pages/Portfolio";
 import Contact from "./pages/Contact";
 import ErrorPage from "./pages/Error";
 
+// components
+import Slideshow from "./components/Slideshow";
+import Footer from "./components/Footer";
+
 // music
 import aMillionDreams from "./assets/music/a-million-dreams.mp3";
 
@@ -42,6 +46,7 @@ const App = (): JSX.Element => {
 
   return (
     <div>
+      <Slideshow />
       <Sound
         url={aMillionDreams}
         playStatus={globalContext.state.isMusicPlaying ? "PLAYING" : "PAUSED"}
@@ -49,6 +54,7 @@ const App = (): JSX.Element => {
         volume={isMobile ? 10 : 30}
       />
       <RouterProvider router={router} />
+      <Footer />
     </div>
   );
 };

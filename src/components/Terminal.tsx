@@ -59,7 +59,9 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
         setIsCallingAPI(false);
       } catch (error) {
         console.error(error);
-        CMD_ERROR.literal = `cdgsh - error: ${(error as any).response.data}`;
+        CMD_ERROR.literal = `cdgsh - error: ${
+          (error as any).response.data ?? "unexpected error occured!"
+        }`;
         setTerminalLogs((logs) => [...logs, CMD_ERROR]);
         setIsCallingAPI(false);
       }

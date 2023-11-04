@@ -33,7 +33,6 @@ import {
   DummyPrint,
   Barcode,
   JoshPrint,
-  PrintScanner,
   ScrollIndicator,
 } from "../styles/pages/home";
 
@@ -83,7 +82,6 @@ const Home = (): JSX.Element => {
       <ContentWrapper $isMenuOpen={globalContext.state.isMenuOpen}>
         <FingerPrintPad className="old-font">
           <DummyPrint>
-            <PrintScanner />
             <img src={dummyPrint} alt="dummy fingerprint" />
           </DummyPrint>
           <h5>
@@ -150,7 +148,7 @@ const Home = (): JSX.Element => {
         </div>
       </ContentWrapper>
 
-      {!isMobile && <RecordPlayer />}
+      {/* {!isMobile && <RecordPlayer />} */}
     </div>
   );
 };

@@ -1,10 +1,14 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { isMobile } from "react-device-detect";
 
 export const Outline = styled.div<{ $isSelected: boolean }>`
   display: ${({ $isSelected: isSelected }) => (isSelected ? "block" : "none")};
   text-align: center;
   margin: ${isMobile ? "1.5rem 0" : "3rem 0"};
+  ${!isMobile &&
+  css`
+    margin-bottom: 10rem;
+  `}
 `;
 
 export const Interface = styled.div`
@@ -18,6 +22,7 @@ export const Interface = styled.div`
   font-size: 0.8rem;
   font-weight: bold;
   border: 1px solid black;
+  background-color: #f9f9f8;
 
   .plain {
     font-weight: normal;
@@ -40,6 +45,7 @@ export const CmdInput = styled.textarea`
   overflow: hidden;
   font-size: 0.8rem;
   font-weight: bold;
+  background-color: transparent;
 
   &:focus {
     outline: none;
