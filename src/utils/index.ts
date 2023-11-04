@@ -23,7 +23,9 @@ export const getDayname = (day: number): string => {
 
 export const getBookedTimestampsFromDB = async (): Promise<number[]> => {
   try {
-    const res = await axios.get("http://localhost:8000/api/contact/meeting");
+    const res = await axios.get(
+      `${process.env.REACT_APP_CDGR_API}/api/contact/meeting`
+    );
     return res.data.scheduled ?? [];
   } catch (error) {
     console.error(error);

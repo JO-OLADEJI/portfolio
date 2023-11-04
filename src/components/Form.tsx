@@ -56,10 +56,13 @@ const Form = ({ isActive }: ContactMediumProps): JSX.Element => {
 
     try {
       setDisableButton(true);
-      const res = await axios.post("http://localhost:8000/api/contact/form", {
-        ...value,
-        src: "form",
-      });
+      const res = await axios.post(
+        `${process.env.REACT_APP_CDGR_API}/api/contact/form`,
+        {
+          ...value,
+          src: "form",
+        }
+      );
       if (res.status === 200) {
         setName("");
         setEmail("");

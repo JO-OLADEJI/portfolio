@@ -40,7 +40,7 @@ const Terminal = ({ isActive }: ContactMediumProps): JSX.Element => {
       try {
         setIsCallingAPI(true);
         const res = await axios.post(
-          "http://localhost:8000/api/contact/terminal",
+          `${process.env.REACT_APP_CDGR_API}/api/contact/terminal`,
           {
             ...details,
             src: "terminal",

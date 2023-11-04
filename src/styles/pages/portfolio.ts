@@ -32,6 +32,7 @@ export const Display = styled.div`
   padding: 1rem;
   padding-top: 2rem;
   font-weight: bold;
+  background-color: white;
 
   h1 {
     text-align: center;

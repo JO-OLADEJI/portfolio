@@ -64,10 +64,13 @@ const Canvas = ({ isActive }: ContactMediumProps): JSX.Element => {
     const canvasImg = boardRef.current.toDataURL("image/png");
     try {
       setIsSubmitting(true);
-      const res = await axios.post("http://localhost:8000/api/contact/canvas", {
-        imageData: canvasImg,
-        src: "canvas",
-      });
+      const res = await axios.post(
+        `${process.env.REACT_APP_CDGR_API}/api/contact/canvas`,
+        {
+          imageData: canvasImg,
+          src: "canvas",
+        }
+      );
       if (res.status === 200) {
         // TODO: display a sent status to the user
         board2dContext?.clearRect(

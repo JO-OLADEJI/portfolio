@@ -43,6 +43,7 @@ ReactGA.initialize(config["ga-tracking-id"]);
 
 const App = (): JSX.Element => {
   const globalContext = useContext(GlobalContext);
+  console.log({ env: process.env.REACT_APP_CDGR_API });
 
   return (
     <div>

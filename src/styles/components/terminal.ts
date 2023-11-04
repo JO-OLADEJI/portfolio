@@ -23,6 +23,7 @@ export const Interface = styled.div`
   font-weight: bold;
   border: 1px solid black;
   background-color: #f9f9f8;
+  cursor: text;
 
   .plain {
     font-weight: normal;

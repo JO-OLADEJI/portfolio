@@ -133,9 +133,10 @@ const Meeting = ({ isActive }: ContactMediumProps): JSX.Element => {
     try {
       setDisableButton(true);
       const res = await axios.post(
-        "http://localhost:8000/api/contact/meeting",
+        `${process.env.REACT_APP_CDGR_API}/api/contact/meeting`,
         {
           ...value,
+          dateLiteral: new Date(value.meetingTimestamp).toString(),
           src: "meeting",
         }
       );
