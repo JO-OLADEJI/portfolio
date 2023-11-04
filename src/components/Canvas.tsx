@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import axios from "axios";
 import { isMobile } from "react-device-detect";
 
 // types
@@ -7,6 +8,7 @@ import { ContactMediumProps } from "../types";
 // assets
 import expand from "../assets/enlarge.png";
 import paperPlane from "../assets/paper-plane.png";
+import loader from "../assets/loader.png";
 
 // styles
 import {
@@ -21,14 +23,69 @@ enum InkColor {
   black = "#000000",
   grey = "#7b7b7b",
   light = "#cacaca",
+  feint = "#f0f0f0",
 }
 
+// TODO: fix disappearing grid bug
 const Canvas = ({ isActive }: ContactMediumProps): JSX.Element => {
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
   const [selectedInk, setSelectedInk] = useState<InkColor>(InkColor.black);
-  const boardRef = useRef<HTMLCanvasElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [board2dContext, setBoard2dContext] =
     useState<CanvasRenderingContext2D | null>();
+  const boardRef = useRef<HTMLCanvasElement>(null);
+
+  const renderGrid = useCallback(() => {
+    if (!board2dContext) return;
+    board2dContext.lineWidth = 1;
+    board2dContext.strokeStyle = InkColor.feint;
+
+    for (let i = 20; i <= 1878; i += 21) {
+      // vertical lines
+      board2dContext.moveTo(i, 5);
+      board2dContext.lineTo(i, 918);
+
+      // horizontal lines
+      board2dContext.moveTo(5, i);
+      board2dContext.lineTo(1878, i);
+
+      board2dContext.stroke();
+    }
+  }, [board2dContext]);
+
+  // TODO: handle api async call state (loading)
+  const handleCanvasSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    if (isSubmitting) return;
+    if (!boardRef.current) return;
+
+    const canvasImg = boardRef.current.toDataURL("image/png");
+    try {
+      setIsSubmitting(true);
+      const res = await axios.post("http://localhost:8000/api/contact/canvas", {
+        imageData: canvasImg,
+        src: "canvas",
+      });
+      if (res.status === 200) {
+        // TODO: display a sent status to the user
+        board2dContext?.clearRect(
+          0,
+          0,
+          boardRef.current.width,
+          boardRef.current.height
+        );
+        renderGrid();
+      } else {
+        // TODO: handle API failed state
+      }
+      setIsSubmitting(false);
+    } catch (error) {
+      console.error(error);
+      setIsSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     const context = boardRef.current?.getContext("2d");
@@ -39,6 +96,10 @@ const Canvas = ({ isActive }: ContactMediumProps): JSX.Element => {
     context.strokeStyle = InkColor.black;
     setBoard2dContext(context);
   }, []);
+
+  useEffect(() => {
+    renderGrid();
+  }, [renderGrid]);
 
   useEffect(() => {
     if (!board2dContext) return;
@@ -59,16 +120,14 @@ const Canvas = ({ isActive }: ContactMediumProps): JSX.Element => {
   const handleMouseMove = (
     e: React.MouseEvent<HTMLCanvasElement, MouseEvent>
   ): void => {
-    if (!board2dContext) return;
     if (!isDrawing) return;
     const { offsetX, offsetY } = e.nativeEvent;
-    board2dContext.lineTo(offsetX * 2, offsetY * 2);
-    board2dContext.stroke();
+    board2dContext?.lineTo(offsetX * 2, offsetY * 2);
+    board2dContext?.stroke();
   };
 
   const handleMouseUp = (): void => {
-    if (!board2dContext) return;
-    board2dContext.closePath();
+    board2dContext?.closePath();
     setIsDrawing(false);
   };
 
@@ -92,7 +151,7 @@ const Canvas = ({ isActive }: ContactMediumProps): JSX.Element => {
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
         />
-        <Controls>
+        <Controls $isLoading={isSubmitting}>
           <div>
             <Ink
               style={{ backgroundColor: InkColor.black }}
@@ -110,8 +169,12 @@ const Canvas = ({ isActive }: ContactMediumProps): JSX.Element => {
               $isActive={selectedInk === InkColor.light}
             />
           </div>
-          <button onClick={(e) => e.preventDefault()}>
-            <img src={isMobile ? expand : paperPlane} alt="send" />
+          <button onClick={handleCanvasSubmit} disabled={isSubmitting}>
+            {isSubmitting ? (
+              <img src={loader} alt="loading" />
+            ) : (
+              <img src={isMobile ? expand : paperPlane} alt="send" />
+            )}
           </button>
         </Controls>
       </BoardOutline>

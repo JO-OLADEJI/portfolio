@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { isMobile } from "react-device-detect";
 
 export const Outline = styled.div<{ $isSelected: boolean }>`
@@ -26,7 +26,17 @@ export const Board = styled.canvas`
   border-radius: ${isMobile ? "0.3rem" : "0.7rem"};
 `;
 
-export const Controls = styled.div`
+const spin = keyframes`
+  0% {
+    transform: rotateZ(0deg);
+  }
+
+  100% {
+    transform: rotateZ(360deg);
+  }
+`;
+
+export const Controls = styled.div<{ $isLoading: boolean }>`
   width: 3rem;
   height: 90%;
   position: absolute;
@@ -44,10 +54,21 @@ export const Controls = styled.div`
     background-color: transparent;
   }
 
+  button:disabled {
+    cursor: not-allowed;
+  }
+
   img {
     width: ${isMobile ? "1.2rem" : "1.6rem"};
-    opacity: 0.6;
+    opacity: 0.5;
     transition: opacity 0.3s ease-out;
+
+    ${({ $isLoading }) =>
+      $isLoading &&
+      css`
+        animation: ${spin} 1s linear infinite;
+        opacity: 1;
+      `};
   }
 
   img:hover {
