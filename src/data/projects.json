@@ -2,33 +2,33 @@
   {
     "name": "CartLog",
     "descripton": " A transport management system for booking and keeping records of a company's road travel information.",
-    "tools": ["React.ts", "Node.ts", "Illustrator"],
+    "tools": ["Next.js", "TypeScript", "Illustrator"],
     "year": 2023,
-    "url": "https://cartlog.thecodeographer.com/",
+    "url": "https://rtms.havitlabs.com/",
     "inProgress": true
   },
   {
     "name": "Davicomm Travels",
-    "descripton": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt illo veritatis laboriosam perspiciatis, obcaecati repellat!",
-    "tools": [],
+    "descripton": "Homepage for an online travel company providing education travel consulting to well-meaning individuals.",
+    "tools": ["React.js", "JavaScript"],
     "year": 2021,
     "url": "https://davicomm-travels.vercel.app/",
     "inProgress": false
   },
   {
-    "name": "Tokners Website",
-    "descripton": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt illo veritatis laboriosam perspiciatis.",
-    "tools": [],
-    "year": 2021,
-    "url": "https://tokners.vercel.app/",
+    "name": "Mograph Reel",
+    "descripton": "A visual journey that combines creativity and technical prowess. From stunning animations to eye-catching designs, explore a world of motion in every frame.",
+    "tools": ["After Effects", "Illustrator", "Premiere Pro"],
+    "year": 2023,
+    "url": "https://youtu.be/ogZdOPCvnrs?si=_iNT2oJ0jKogDzVq",
     "inProgress": false
   },
   {
-    "name": "Mograph Reel",
-    "descripton": "A visual journey that combines creativity and technical prowess. From stunning animations to eye-catching designs, explore a world of motion in every frame.",
-    "tools": ["After Effects", "Premiere Pro"],
-    "year": 2023,
-    "url": "http://",
+    "name": "Tokners Website",
+    "descripton": "Homepage for a social media with creators being able to post content as Non fungible Tokens that can be owned and traded on the Tknrs network.",
+    "tools": ["React.js", "JavaScript", "Figma"],
+    "year": 2021,
+    "url": "https://tokners.vercel.app/",
     "inProgress": false
   },
   {

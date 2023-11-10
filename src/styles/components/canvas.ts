@@ -7,7 +7,7 @@ export const Outline = styled.div<{ $isSelected: boolean }>`
   margin: ${isMobile ? "1.5rem 0" : "3rem 0"};
   ${!isMobile &&
   css`
-    margin-bottom: 10rem;
+    margin-bottom: 6rem;
   `}
 `;
 
